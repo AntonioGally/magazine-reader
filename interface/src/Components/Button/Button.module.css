@@ -1,3 +1,11 @@
-.tst {
-    
+.button {
+    all: unset;
+    padding: 8px 22px;
+    border-radius: 4px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    cursor: pointer;
 }

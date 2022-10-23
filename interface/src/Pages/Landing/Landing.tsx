@@ -1,8 +1,9 @@
 import React from "react";
+import Button from "../../Components/Button/Button";
 
 const Landing: React.FC = () => {
     return (
-        <><h1>Oi</h1></>
+        <Button label={"teste botão"} _type="primary" />
     )
 }
 

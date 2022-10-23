@@ -25,8 +25,10 @@ const Button: React.FC<Props> = ({ label, _type, children, ...props }) => {
     }
 
     return (
-        <button {...props} style={{ ...buttonType[_type], ...props.style }}>
+        <button {...props} className={`${style["button"]} ${props.className}`} style={{ ...buttonType[_type], ...props.style }}>
             {label || children}
         </button>
     );
 }
+
+export default Button;
