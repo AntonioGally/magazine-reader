@@ -14,12 +14,12 @@ const Landing: React.FC = () => {
 
     const handleLogin = useCallback(
         (email: string, password: string) => {
-            navigate("/main");
+            navigate("/magazines");
         }, []);
 
     const handleRegister = useCallback(
         (name: string, middleName: string, email: string, password: string, confirmPassword: string) => {
-            navigate("/main");
+            navigate("/magazines");
         }, []);
 
     return (
