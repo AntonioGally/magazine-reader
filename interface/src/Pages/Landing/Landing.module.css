@@ -1,0 +1,24 @@
+.wrapper {
+    padding: 28px;
+    background-color: #FFF;
+}
+
+.header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+}
+
+.header>div button:first-child {
+    margin-right: 12px;
+}
+
+.body {
+    margin: 50px auto 0;
+    max-width: 1300px;
+    background: rgba(0, 0, 0, 0.02);
+    box-shadow: 0px 0px 4px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    min-height: 800px;
+}

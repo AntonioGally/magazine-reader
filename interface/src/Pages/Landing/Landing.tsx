@@ -1,9 +1,20 @@
 import React from "react";
+//Components
 import Button from "../../Components/Button/Button";
+//Css
+import style from "./Landing.module.css";
 
 const Landing: React.FC = () => {
     return (
-        <Button label={"teste botão"} _type="primary" />
+        <div className={style["wrapper"]}>
+            <div className={style["header"]}>
+                <div>
+                    <Button label={"Criar conta"} _type={"secondary"} />
+                    <Button label={"Entrar"} _type={"primary"} />
+                </div>
+            </div>
+            <div className={style["body"]}></div>
+        </div>
     )
 }
 
