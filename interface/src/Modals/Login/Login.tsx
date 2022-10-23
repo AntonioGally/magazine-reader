@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+// Components
 import { toast } from "react-toastify";
+import Modal from "../../Components/Modal/Modal";
+//Elements
 import Button from "../../Components/Button/Button";
 import Input from "../../Components/Input/Input";
 import Label from "../../Components/Label/Label";
-// Components
-import Modal from "../../Components/Modal/Modal";
 //Css
 import style from "./Login.module.css";
 
@@ -33,7 +34,7 @@ const Login: React.FC<Props> = ({ visible, closeModal, handleLogin }) => {
             <div className={style["wrapper"]}>
                 <div>
                     <Label label={"Email:"} />
-                    <Input placeholder="Ex.: antonio.gally@gmail.com" value={formData.email}
+                    <Input type={"email"} required placeholder="Ex.: antonio.gally@gmail.com" value={formData.email}
                         onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))} />
                 </div>
                 <div>
