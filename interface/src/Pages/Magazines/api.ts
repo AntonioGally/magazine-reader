@@ -16,3 +16,22 @@ export const api = {
         }
     ]
 }
+
+export const magazine = {
+    information: {
+        name: "",
+        description: "",
+        image: "",
+        url: "",
+    },
+    selectors: {
+        container: "",
+        singleEdition: "",
+        editionInputs: {
+            name: "",
+            description: "",
+            image: "",
+            url: ""
+        }
+    }
+}

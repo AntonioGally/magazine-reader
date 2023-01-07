@@ -1,0 +1,28 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.tag-area {
+    margin: 10px 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tag-area>span {
+    cursor: pointer;
+}
+
+.image {
+    width: 120px;
+    height: 153px;
+    border: none;
+    outline: 0;
+    border-radius: 4px;
+    background-color: #D9D9D9;
+}
+
+.title-desc-wrapper {
+    margin-left: 10px;
+
+}

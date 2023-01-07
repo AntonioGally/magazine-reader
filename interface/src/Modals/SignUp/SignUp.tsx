@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React from "react";
 //Components
 import Modal from "../../Components/Modal/Modal";
 //Elements
