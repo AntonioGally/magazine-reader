@@ -6,6 +6,7 @@ import Input from "../../../../Components/Input/Input";
 //Css
 import style from "./Selectors.module.css";
 import TextArea from "antd/lib/input/TextArea";
+import Button from "../../../../Components/Button/Button";
 
 const Selectors: React.FC = () => {
     return (
@@ -45,6 +46,11 @@ const Selectors: React.FC = () => {
             <div>
                 <Label label={"URL:"} />
                 <Input placeholder="" name="url" />
+            </div>
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <Button _type="primary" style={{ margin: "10px 0" }}>
+                    <span>Cadastrar</span>
+                </Button>
             </div>
         </div>
     )
