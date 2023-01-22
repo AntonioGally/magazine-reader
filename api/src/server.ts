@@ -1,5 +1,6 @@
 import { ErrorRequestHandler, NextFunction, RequestHandler, Response } from "express";
 
+require("dotenv").config();
 const express = require('express');
 require('express-async-errors');
 const routes = require('./routes');
