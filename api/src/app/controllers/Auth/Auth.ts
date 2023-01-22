@@ -2,21 +2,44 @@
 import { sign, verify } from "jsonwebtoken";
 //Types
 import { NextFunction, Request, Response } from "express";
-import { LoginPayload } from "./auth.types";
+import { LoginPayload, SignUpPayload } from "./auth.types";
 //Flows
-import LoginValidator from "./flows/Validators/Login/LoginValidator";
+import LoginValidator from "./flows/Validators/FormLogin/LoginValidator";
+import UserValidator from "./flows/Validators/User/UserValidator";
+import FormSignUpValidator from "./flows/Validators/FormSignUp/FormSignUpValidator";
+import SignUpCreator from "./flows/SignUpCreator/SignUpCreator";
 
 class Auth {
 
-    login(request: Request<any, any, LoginPayload>, response: Response) {
+    async login(request: Request<any, any, LoginPayload>, response: Response) {
         const { email, password } = request.body;
 
         if (!new LoginValidator(email, password).start()) {
             return response.status(400).json({ error: "Verify the inputs sended" })
         }
+
+        const dataBaseUser = await new UserValidator(email, password).start();
+        if (!dataBaseUser) {
+            return response.status(203).json({ error: "Verify email and password" })
+        }
+
         const user = { email }
         const accessToken = sign(user, process.env.ACCESS_TOKEN_SECRET);
         return response.status(200).json({ accessToken });
+    }
+
+    async signUp(request: Request<any, any, SignUpPayload>, response: Response) {
+        const signUpPayload = request.body;
+
+        if (!new FormSignUpValidator(signUpPayload).start()) {
+            return response.status(400).json({ error: "Verify the inputs sended" })
+        }
+
+        const newUser = await new SignUpCreator(signUpPayload).start();
+        if (!newUser) {
+            return response.status(500).json({ error: "Error on database creation user process" })
+        }
+        return response.status(200).json(newUser[0])
     }
 
     authenticateToken(request: Request, response: Response, next: NextFunction) {

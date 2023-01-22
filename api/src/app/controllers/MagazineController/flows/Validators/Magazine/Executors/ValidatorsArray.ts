@@ -1,6 +1,6 @@
 //Types
 import { storePayload } from "../../../../magazine.types";
-import { IValidator } from "../IValidator";
+import { IValidator } from "../../../../../../types/general.types";
 //Executors
 import MagazineDescription from "./MagazineDescription";
 import MagazineImage from "./MagazineImage";

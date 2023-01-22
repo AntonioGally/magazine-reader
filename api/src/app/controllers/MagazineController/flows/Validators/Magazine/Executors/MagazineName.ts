@@ -1,6 +1,4 @@
-import { IValidator } from "../IValidator";
-
-export default class MagazineName implements IValidator {
+export default class MagazineName {
     constructor(
         private magazineName: string
     ) { }

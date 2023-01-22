@@ -1,6 +1,4 @@
-import { IValidator } from "../IValidator";
-
-export default class MagazineDescription implements IValidator {
+export default class MagazineDescription {
     constructor(
         private description: string
     ) { }

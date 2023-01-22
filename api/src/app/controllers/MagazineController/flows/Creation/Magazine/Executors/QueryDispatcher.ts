@@ -1,16 +1,17 @@
 import { storePayload } from "../../../../magazine.types";
-const db = require("../../../../../../database");
+import { query } from "../../../../../../database";
 
 export default class QueryDispatcher {
     constructor(
-        private magazineInfo: storePayload["information"],
+        private magazinePayload: storePayload,
         private query: string
     ) { }
 
-    execute() {
+    async execute() {
         return new Promise((resolve, reject) => {
-            const { name, description, image, url } = this.magazineInfo;
-            // db.query(this.query, [])
+            const { name, description, image, url, creationDate } = this.magazinePayload.information;
+            const { userId } = this.magazinePayload;
+            return query(this.query, [name, description, image, url, creationDate, userId]);
         })
     }
 }

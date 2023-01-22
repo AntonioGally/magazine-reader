@@ -1,6 +1,4 @@
-import { IValidator } from "../IValidator";
-
-export default class MagazineImage implements IValidator {
+export default class MagazineImage {
     constructor(
         private image: string
     ) { }

@@ -1,13 +1,15 @@
+//Types
 import { storePayload } from "../../../magazine.types";
+//Executors
 import BuildQuery from "./Executors/BuildQuery";
-
+import QueryDispatcher from "./Executors/QueryDispatcher";
 export default class MagazineCreator {
     constructor(
-        private magazineInfo: storePayload["information"]
+        private magazinePayload: storePayload
     ) { }
     
-    start() {
+    async start() {
         let query = new BuildQuery().execute();
-        
+        new QueryDispatcher(this.magazinePayload, query).execute()
     }
 }

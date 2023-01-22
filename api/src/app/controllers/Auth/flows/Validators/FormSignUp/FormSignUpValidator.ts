@@ -1,19 +1,17 @@
-//Types
-import { storePayload } from "../../../magazine.types";
 import { IValidator } from "../../../../../types/general.types";
-//Executor
+import { SignUpPayload } from "../../../auth.types";
 import ValidatorsArray from "./Executors/ValidatorsArray";
 
-export default class StoreValidator {
+export default class FormSignUpValidator {
     constructor(
-        private payload: storePayload
+        private sigUpPayload: SignUpPayload
     ) { }
 
     validatorsArray: IValidator[] = [];
 
     start() {
-        let validation = false;
-        new ValidatorsArray(this.payload, this.validatorsArray).execute();
+        let validation: boolean = false;
+        new ValidatorsArray(this.validatorsArray, this.sigUpPayload).execute();
         for (let i = 0; i < this.validatorsArray.length; i++) {
             validation = this.validatorsArray[i].execute();
             if (!validation) return;

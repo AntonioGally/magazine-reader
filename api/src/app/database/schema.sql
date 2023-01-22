@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS users (
   userName VARCHAR NOT NULL,
   userLastName VARCHAR NOT NULL,
   userEmail VARCHAR UNIQUE NOT NULL,
-  userPassword TEXT NOT NULL
+  userPassword TEXT NOT NULL,
+  userCreationDate TIMESTAMP NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS magazine (

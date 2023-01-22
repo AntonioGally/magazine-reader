@@ -5,6 +5,7 @@ export type storePayload = {
         description: string;
         image: string;
         url: string;
+        creationDate: string;
     };
     selectors: {
         container: string;

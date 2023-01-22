@@ -7,9 +7,9 @@ export default class LoginValidator {
         private password: string,
     ) { }
 
-    validatorsArray!: IValidator[];
+    validatorsArray: IValidator[] = [];
 
-    start() {
+    start(): boolean {
         let validation: boolean = false;
         new ValidatorsArray(this.validatorsArray, this.email, this.password).execute();
         for (let i = 0; i < this.validatorsArray.length; i++) {

@@ -1,6 +1,4 @@
-import { IValidator } from "../IValidator";
-
-export default class MagazineUrl implements IValidator {
+export default class MagazineUrl {
     constructor(
         private url: string
     ) { }
