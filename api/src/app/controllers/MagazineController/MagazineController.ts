@@ -1,10 +1,14 @@
 import { Request, Response } from "express";
-
-const MagazineRepository = require('../../repositories/MagazineRepository/MagazineRepository');
+import MagazineCreator from "./flows/Creation/Magazine/MagazineCreator";
+import StoreValidator from "./flows/Validators/Magazine/StoreValidator";
+import { storePayload } from "./magazine.types";
 
 class MagazineController {
-    store(request: Request, response: Response) {
-        
+    store(request: Request<any, any, storePayload>, response: Response) {
+        if (!new StoreValidator(request.body).start()) {
+            return response.status(400).json({ error: "Verify the inputs sended" })
+        }
+        new MagazineCreator(request.body.information).start();
     }
 }
 
