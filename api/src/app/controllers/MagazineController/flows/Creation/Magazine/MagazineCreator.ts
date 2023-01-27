@@ -10,6 +10,6 @@ export default class MagazineCreator {
     
     async start() {
         let query = new BuildQuery().execute();
-        new QueryDispatcher(this.magazinePayload, query).execute()
+        return new QueryDispatcher(this.magazinePayload, query).execute()
     }
 }

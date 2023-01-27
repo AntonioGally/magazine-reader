@@ -18,35 +18,19 @@ const Selectors: React.FC = () => {
                 </Tag>
             </div>
             <div>
-                <Label label={"Container"} />
+                <Label label={"Nome do seletor:"} />
                 <Input />
             </div>
             <div>
-                <Label label={"Edição"} />
+                <Label label={"URL do SiteMap:"} />
                 <Input />
             </div>
-            <Divider />
-            <div style={{ display: "flex" }}>
-                <img src="#" className={style["image"]} />
-                <div className={style["title-desc-wrapper"]}>
-                    <div>
-                        <Label label={"Título:"} />
-                        <Input placeholder="" name="title" />
-                    </div>
-                    <div>
-                        <Label label={"Descrição:"} />
-                        <TextArea rows={3} />
-                    </div>
-                </div>
-            </div>
+            {/* <Divider /> */}
             <div style={{ marginBottom: 10 }}>
-                <Label label={"Imagem:"} />
-                <Input placeholder="" name="image" />
+                <Label label={"Pesquisar por:"} />
+                <Input placeholder="" />
             </div>
-            <div>
-                <Label label={"URL:"} />
-                <Input placeholder="" name="url" />
-            </div>
+           
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
                 <Button _type="primary" style={{ margin: "10px 0" }}>
                     <span>Cadastrar</span>

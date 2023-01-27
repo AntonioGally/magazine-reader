@@ -6,15 +6,12 @@ export type storePayload = {
         image: string;
         url: string;
         creationDate: string;
-    };
-    selectors: {
-        container: string;
-        singleEdition: string;
-        editionInputs: {
-            name: string;
-            description: string;
-            image: string;
-            url: string;
-        };
-    };
+    }
+}
+
+export type storeSelectorPayload = {
+    magazineId: string;
+    name: string;
+    siteMapUrl: string;
+    searchFor: string;
 }

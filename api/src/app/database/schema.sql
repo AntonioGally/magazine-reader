@@ -1,6 +1,7 @@
 CREATE DATABASE magazinereader;
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 CREATE TABLE IF NOT EXISTS users (
   userId UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
@@ -11,7 +12,7 @@ CREATE TABLE IF NOT EXISTS users (
   userCreationDate TIMESTAMP NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS magazine (
+CREATE TABLE IF NOT EXISTS magazines (
     magazineId UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
     magazineName VARCHAR NOT NULL,
     magazineDescription VARCHAR,
@@ -24,12 +25,17 @@ CREATE TABLE IF NOT EXISTS magazine (
 
 CREATE TABLE IF NOT EXISTS editions (
     editionId UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
-    editionContainer VARCHAR,
-    editionName VARCHAR,
-    editionDescription VARCHAR,
-    editionImage VARCHAR,
     editionUrl VARCHAR,
     editionCreatedDate TIMESTAMP NOT NULL,
     editionMagazine UUID,
-    FOREIGN KEY(editionMagazine) REFERENCES magazine(magazineId)
+    FOREIGN KEY(editionMagazine) REFERENCES magazines(magazineId)
+);
+
+CREATE TABLE IF NOT EXISTS selectors (
+    selectorId UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
+    selectorName VARCHAR NOT NULL,
+    selectorSiteMap VARCHAR NOT NULL,
+    selectorIndexOf VARCHAR NOT NULL,
+    selectorMagazine UUID,
+    FOREIGN KEY(selectorMagazine) REFERENCES magazines(magazineId)
 );

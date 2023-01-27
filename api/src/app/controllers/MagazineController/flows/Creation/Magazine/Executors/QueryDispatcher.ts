@@ -8,10 +8,8 @@ export default class QueryDispatcher {
     ) { }
 
     async execute() {
-        return new Promise((resolve, reject) => {
-            const { name, description, image, url, creationDate } = this.magazinePayload.information;
-            const { userId } = this.magazinePayload;
-            return query(this.query, [name, description, image, url, creationDate, userId]);
-        })
+        const { name, description, image, url, creationDate } = this.magazinePayload.information;
+        const { userId } = this.magazinePayload;
+        return query(this.query, [name, description, image, url, creationDate, userId]);
     }
 }
