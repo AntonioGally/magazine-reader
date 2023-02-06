@@ -10,7 +10,8 @@ router.post("/login", Auth.login);
 router.post("/signUp", Auth.signUp);
 
 //Magazine
-router.post('/magazine', Auth.authenticateToken, MagazineController.store);
+router.post('/magazine', Auth.authenticateToken, MagazineController.storeMagazine);
 router.post('/selector', Auth.authenticateToken, MagazineController.storeSelector);
+router.get('/magazine', Auth.authenticateToken, MagazineController.listMagazine);
 
 module.exports = router;

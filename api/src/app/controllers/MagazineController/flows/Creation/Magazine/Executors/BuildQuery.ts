@@ -1,4 +1,3 @@
-import { storePayload } from "../../../../magazine.types";
 
 export default class BuildQuery {
 
