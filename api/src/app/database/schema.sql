@@ -20,7 +20,9 @@ CREATE TABLE IF NOT EXISTS magazines (
     magazineUrl VARCHAR NOT NULL,
     magazineCreatedDate TIMESTAMP NOT NULL,
     magazineCreatedBy UUID,
-    FOREIGN KEY(magazineCreatedBy) REFERENCES users(userId)
+    FOREIGN KEY(magazineCreatedBy) REFERENCES users(userId),
+    magazineSiteMap VARCHAR NOT NULL,
+    magazineIndexOf VARCHAR NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS editions (
@@ -29,13 +31,4 @@ CREATE TABLE IF NOT EXISTS editions (
     editionCreatedDate TIMESTAMP NOT NULL,
     editionMagazine UUID,
     FOREIGN KEY(editionMagazine) REFERENCES magazines(magazineId)
-);
-
-CREATE TABLE IF NOT EXISTS selectors (
-    selectorId UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
-    selectorName VARCHAR NOT NULL,
-    selectorSiteMap VARCHAR NOT NULL,
-    selectorIndexOf VARCHAR NOT NULL,
-    selectorMagazine UUID,
-    FOREIGN KEY(selectorMagazine) REFERENCES magazines(magazineId)
 );

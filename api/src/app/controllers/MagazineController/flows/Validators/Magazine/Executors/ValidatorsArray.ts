@@ -6,6 +6,8 @@ import MagazineDescription from "./MagazineDescription";
 import MagazineImage from "./MagazineImage";
 import MagazineName from "./MagazineName";
 import MagazineUrl from "./MagazineUrl";
+import MagazineSiteMap from "./MagazineSiteMap";
+import MagazineIndexOf from "./MagazineIndexOf";
 
 export default class ValidatorsArray {
     constructor(
@@ -18,5 +20,7 @@ export default class ValidatorsArray {
         this.validatorsArray.push(new MagazineDescription(this.payload.information.description));
         this.validatorsArray.push(new MagazineImage(this.payload.information.image));
         this.validatorsArray.push(new MagazineUrl(this.payload.information.url));
+        this.validatorsArray.push(new MagazineSiteMap(this.payload.information.siteMap));
+        this.validatorsArray.push(new MagazineIndexOf(this.payload.information.indexOf));
     }
 }
