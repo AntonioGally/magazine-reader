@@ -1,15 +1,15 @@
 import React, { useMemo } from "react";
 //Components
 import Modal from "../../Components/Modal/Modal";
-//Elements
-import { Tabs } from "antd";
-import Button from "../../Components/Button/Button";
-import Input from "../../Components/Input/Input";
-import Label from "../../Components/Label/Label";
-//Css
-import style from "./NewMagazine.module.css";
 import Informations from "./Tabs/Informations/Informations";
 import Selectors from "./Tabs/Selectors/Selectors";
+import Button from "../../Components/Button/Button";
+import { Tabs } from "antd";
+//Css
+import style from "./NewMagazine.module.css";
+//Scripts
+import Validator from "./Functions/Validators/Validator";
+import { newMagazinePayload } from "./newMagazine.types";
 
 interface Props {
     visible: boolean;
@@ -17,8 +17,15 @@ interface Props {
 }
 
 const NewMagazine: React.FC<Props> = ({ visible, closeModal }) => {
-    function handleSubmit() {
 
+    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        //@ts-ignore
+        const { title, description, magazineImage, magazineUrl, sitemap, _indexOf } = event.target;
+        const payload = ({ name: title, description, magazineImage, magazineUrl, sitemap, _indexOf } as unknown) as newMagazinePayload;
+        const validation = new Validator(payload).start();
+        if (validation.error) return;
+        
     }
 
     const getTabs = useMemo(() => {
@@ -42,6 +49,11 @@ const NewMagazine: React.FC<Props> = ({ visible, closeModal }) => {
 
             <form className={style["wrapper"]} onSubmit={handleSubmit}>
                 <Tabs items={getTabs} />
+                <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <Button _type="primary" style={{ margin: "10px 0" }} type="submit">
+                        <span>Cadastrar</span>
+                    </Button>
+                </div>
             </form>
 
         </Modal>

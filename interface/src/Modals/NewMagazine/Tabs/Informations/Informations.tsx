@@ -18,17 +18,17 @@ const Informations: React.FC = () => {
                     </div>
                     <div>
                         <Label label={"Descrição:"} />
-                        <TextArea rows={4} />
+                        <TextArea rows={4} name="description" />
                     </div>
                 </div>
             </div>
             <div style={{ marginBottom: 10 }}>
                 <Label label={"Imagem:"} />
-                <Input placeholder="" required name="image" />
+                <Input placeholder="" required name="magazineImage" />
             </div>
             <div>
                 <Label label={"URL:"} />
-                <Input placeholder="" required name="url" />
+                <Input placeholder="" required name="magazineUrl" />
             </div>
         </div>
     )

@@ -18,23 +18,13 @@ const Selectors: React.FC = () => {
                 </Tag>
             </div>
             <div>
-                <Label label={"Nome do seletor:"} />
-                <Input />
-            </div>
-            <div>
                 <Label label={"URL do SiteMap:"} />
-                <Input />
+                <Input name="sitemap" />
             </div>
             {/* <Divider /> */}
             <div style={{ marginBottom: 10 }}>
                 <Label label={"Pesquisar por:"} />
-                <Input placeholder="" />
-            </div>
-           
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                <Button _type="primary" style={{ margin: "10px 0" }}>
-                    <span>Cadastrar</span>
-                </Button>
+                <Input placeholder="" name="_indexOf" />
             </div>
         </div>
     )
