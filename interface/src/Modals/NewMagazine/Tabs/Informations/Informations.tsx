@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 //Components
 import Input from "../../../../Components/Input/Input";
 import Label from "../../../../Components/Label/Label";
@@ -7,10 +7,11 @@ import TextArea from "../../../../Components/TextArea/TextArea";
 import style from "./Informations.module.css";
 
 const Informations: React.FC = () => {
+    const [imageUrl, setImageUrl] = useState("");
     return (
         <div className={style["wrapper"]}>
             <div style={{ display: "flex" }}>
-                <img src="#" className={style["image"]} />
+                <img src={imageUrl} className={style["image"]} />
                 <div className={style["title-desc-wrapper"]}>
                     <div>
                         <Label label={"Título:"} />
@@ -24,11 +25,13 @@ const Informations: React.FC = () => {
             </div>
             <div style={{ marginBottom: 10 }}>
                 <Label label={"Imagem:"} />
-                <Input placeholder="" required name="magazineImage" />
+                <Input placeholder="http://..." required name="magazineImage"
+                    onChange={(e) => setImageUrl(e.target.value)}
+                />
             </div>
             <div>
                 <Label label={"URL:"} />
-                <Input placeholder="" required name="magazineUrl" />
+                <Input placeholder="http://..." required name="magazineUrl" />
             </div>
         </div>
     )

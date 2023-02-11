@@ -3,7 +3,7 @@ export type newMagazinePayload = {
     description: string;
     image: string;
     url: string;
-    createdDate: string;
+    creationDate: string;
     siteMap: string;
-    _indexOf: string;
+    indexOf: string;
 }

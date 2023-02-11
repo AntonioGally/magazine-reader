@@ -16,19 +16,14 @@ instance.interceptors.request.use(request => {
 
 
 instance.interceptors.response.use(response => {
-    if (response.status === 401) {
-        localStorage.setItem("user_token", "");
-        localStorage.setItem("user_id", "");
-
-    }
     return response;
 }, function (error) {
     if (error.response.data === "Forbidden") {
+        localStorage.setItem("user_token", "");
+        localStorage.setItem("user_id", "");
         window.location.href = window.location.origin;
     }
-    // if (window.location.hash !== '/magazines' && window.location.hash !== '/editions') {
-    //     window.location.hash = '/';
-    // }
+    return Promise.reject(error);
 })
 
 export default instance;

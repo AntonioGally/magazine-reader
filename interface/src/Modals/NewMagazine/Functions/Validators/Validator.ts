@@ -19,7 +19,7 @@ export default class Validator {
         new ValidatorsArray(this.payload, this.validatorsArray).execute();
         for (let i = 0; i < this.validatorsArray.length; i++) {
             validation = this.validatorsArray[i].execute();
-            if (!validation.error) {
+            if (validation.error) {
                 toast.error(validation.errorCause);
                 return validation;
             }

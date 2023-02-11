@@ -21,6 +21,6 @@ export default class ValidatorsArray {
         this.validatorsArray.push(new Image(this.payload.image));
         this.validatorsArray.push(new Url(this.payload.url));
         this.validatorsArray.push(new SiteMap(this.payload.siteMap));
-        this.validatorsArray.push(new IndexOf(this.payload._indexOf));
+        this.validatorsArray.push(new IndexOf(this.payload.indexOf));
     }
 }
