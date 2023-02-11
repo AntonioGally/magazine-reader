@@ -11,8 +11,7 @@ import WithTemplate from "../Hoc/WithTemplate/WithTemplate";
 import Landing from "../Pages/Landing/Landing";
 import Magazines from "../Pages/Magazines/Magazines";
 import Editions from "../Pages/Editions/Editions";
-import { useSelector } from "react-redux";
-import { RootState } from "../store/store";
+import NewEditions from "../Pages/NewEditions/NewEditions";
 
 const Router: React.FC = () => {
 
@@ -22,6 +21,7 @@ const Router: React.FC = () => {
                 <Route path="/" element={<Landing />} />
                 <Route path="/magazines" element={<WithTemplate><Magazines /></WithTemplate>} />
                 <Route path="/editions" element={<WithTemplate><Editions /></WithTemplate>} />
+                <Route path="/new-editions" element={<WithTemplate><NewEditions /></WithTemplate>} />
             </Routes>
         </BrowserRouter>
     )

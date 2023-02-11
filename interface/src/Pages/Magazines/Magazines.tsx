@@ -1,8 +1,9 @@
 //Libs
 import React, { useState, useEffect } from "react";
+import { useQuery } from "react-query";
+//Components
 import Button from "../../Components/Button/Button";
 //Scripts
-import { api } from "./api";
 import authHttp from "../../scripts/authHttp";
 //Css
 import style from "./Magazines.module.css";
@@ -12,17 +13,16 @@ import { promiseSuccess } from "../../@types/promises";
 import { magazineType } from "./magazines.types";
 
 const Magazines: React.FC = () => {
-    const [listContent, setListContent] = useState<magazineType[]>();
     const [newMagazineModal, setNewMagazineModal] = useState<boolean>(false);
 
-    useEffect(() => {
-        authHttp.get("/magazine")
-            .then((data: promiseSuccess<magazineType[]>) => {
-                setListContent(data.data);
-            })
-    }, []);
+    const { isLoading, error, data, isFetching } = useQuery<magazineType[]>("magazineList", () =>
+        authHttp
+            .get("/magazine")
+            .then((res) => res.data)
+    );
 
-    if (!listContent) return <span>Loading...</span>
+    if (isLoading || !data) return <span>Loading...</span>
+    if (error) return <span>An error has occurred</span>;
 
     return (
         <div className={style["magazine-wrapper"]}>
@@ -30,7 +30,7 @@ const Magazines: React.FC = () => {
                 <Button label={"Nova revista"} _type="secondary" onClick={() => setNewMagazineModal(true)} />
             </div>
             <div className={style["card-wrapper"]}>
-                {listContent.map((value, index) => (
+                {data.map((value, index) => (
                     <Card {...value} key={index} />
                 ))}
             </div>

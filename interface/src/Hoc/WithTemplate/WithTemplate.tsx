@@ -18,7 +18,8 @@ const WithTemplate: React.FC<Props> = ({ children }) => {
     const navigate = useNavigate();
     const titleMap: titleMapType = {
         "/magazines": "Revistas cadastradas",
-        "/editions": "Novas edições"
+        "/editions": "Edições cadastradas",
+        "/new-editions": "Novas edições"
     }
 
     function handleLogOut() {
@@ -37,6 +38,10 @@ const WithTemplate: React.FC<Props> = ({ children }) => {
                 </div>
                 <div className={`${style["sidebar-link"]} ${location.pathname === "/editions" ? style["active"] : ""}`}
                     onClick={() => navigate("/editions")}>
+                    <span>Edições cadastradas</span>
+                </div>
+                <div className={`${style["sidebar-link"]} ${location.pathname === "/new-editions" ? style["active"] : ""}`}
+                    onClick={() => navigate("/new-editions")}>
                     <span>Novas edições</span>
                 </div>
             </div>

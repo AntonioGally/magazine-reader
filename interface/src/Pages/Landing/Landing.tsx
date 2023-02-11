@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 //Components
 import Button from "../../Components/Button/Button";
@@ -25,6 +25,14 @@ const Landing: React.FC = () => {
         (name: string, middleName: string, email: string, password: string, confirmPassword: string) => {
             navigate("/magazines");
         }, []);
+
+    useEffect(() => {
+        let userToken = localStorage.getItem("user_token");
+        let userId = localStorage.getItem("user_id");
+        if (userToken && userId) {
+            navigate("/magazines");
+        }
+    }, [])
 
     return (
         <>
