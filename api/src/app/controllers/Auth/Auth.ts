@@ -25,7 +25,7 @@ class Auth {
 
         const user = { email }
         const accessToken = sign(user, process.env.ACCESS_TOKEN_SECRET);
-        return response.status(200).json({ accessToken });
+        return response.status(200).json({ accessToken, ...dataBaseUser[0] });
     }
 
     async signUp(request: Request<any, any, SignUpPayload>, response: Response) {
