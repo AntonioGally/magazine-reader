@@ -2,7 +2,7 @@
 import React, { useMemo } from "react";
 import { useQuery } from "react-query";
 //Components
-import { Table } from "antd";
+import Table from "../../Components/Table/Table";
 //Scripts
 import authHttp from "../../scripts/authHttp";
 //Css
@@ -23,32 +23,29 @@ const Editions: React.FC = () => {
     if (isLoading || !data) return <span>Loading...</span>
     if (error) return <span>An error has occurred</span>;
 
-    const getTableCol: ColumnsType<editionType> = useMemo(() => {
-        return [
-            {
-                title: "Revista",
-                dataIndex: "magazinename",
-                render: (text, record) => <a href={record.magazineurl}>{text}</a>,
-            },
-            {
-                title: "Url",
-                dataIndex: "editionurl",
-                render: (text, record) => <a href={record.editionurl}>{text.split("/").at(-1)}</a>
-            },
-            {
-                title: "Data de criação",
-                render: (text, record) => <span>{getFormattedDate(record.editioncreateddate).dateString}</span>
-            }
-        ]
-    }, [data]);
+    const getTableCol: ColumnsType<editionType> = [
+        {
+            title: "Revista",
+            dataIndex: "magazinename",
+            render: (text, record) => <a href={record.magazineurl}>{text}</a>,
+        },
+        {
+            title: "Url",
+            dataIndex: "editionurl",
+            render: (text, record) => <a href={record.editionurl}>{text.split("/").at(-1)}</a>
+        },
+        {
+            title: "Data de criação",
+            render: (text, record) => <span>{getFormattedDate(record.editioncreateddate).dateString}</span>
+        }
+    ]
+
 
 
 
     return (
         <div className={style["wrapper"]}>
-            <Table columns={getTableCol} dataSource={data} bordered
-                pagination={{ position: ["bottomRight"], showSizeChanger: true }} size={"middle"}
-            />
+            <Table columns={getTableCol} data={data} />
         </div>
     )
 }
