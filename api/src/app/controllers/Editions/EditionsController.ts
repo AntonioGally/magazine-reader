@@ -29,8 +29,8 @@ class EditionsController {
                 await new CreateEdition(link, magazineId).start();
                 createdLinks.push({
                     newEdition: link,
-                    magazineName: magazineInfo.magazineName,
-                    magazineUrl: magazineInfo.magazineUrl
+                    magazineName: magazineInfo.magazinename,
+                    magazineUrl: magazineInfo.magazineurl
                 });
             }
         }

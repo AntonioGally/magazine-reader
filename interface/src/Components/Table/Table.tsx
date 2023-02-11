@@ -108,7 +108,7 @@ const Table: React.FC<Props> = (props) => {
                     position: ["bottomRight"],
                     showSizeChanger: true,
                     hideOnSinglePage: true
-                }}
+                }} loading={props.loading}
                 size={"middle"} />
         </>
     )
