@@ -1,5 +1,5 @@
-import authHttp from "../../../../../scripts/authHttp";
-import { loginResponse } from "../login.types";
+import http from "../../../../../scripts/http";
+import { userInfoType } from "../../../../../store/user/user.types";
 
 export default class LoginDispatcher {
     constructor(
@@ -8,9 +8,9 @@ export default class LoginDispatcher {
     ) { }
 
     execute() {
-        return new Promise<loginResponse>((resolve, reject) => {
-            authHttp.post("/login", { email: this.email, password: this.password })
-                .then((data) => data.data)
+        return new Promise<userInfoType>((resolve, reject) => {
+            http.post("/login", { email: this.email, password: this.password })
+                .then((data) => resolve(data.data))
                 .catch(reject)
         })
     }

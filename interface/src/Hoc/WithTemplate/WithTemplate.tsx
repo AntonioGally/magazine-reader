@@ -22,7 +22,8 @@ const WithTemplate: React.FC<Props> = ({ children }) => {
     }
 
     function handleLogOut() {
-        console.log("logging out...")
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("user_token");
         navigate("/");
     }
 

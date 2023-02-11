@@ -2,8 +2,10 @@ import React, { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 //Components
 import Button from "../../Components/Button/Button";
-import Login from "../../Modals/Login/Login";
-import SignUp from "../../Modals/SignUp/SignUp";
+import LoginModal from "../../Modals/Login/Login";
+import SignUpModal from "../../Modals/SignUp/SignUp";
+import Login from "./Functions/Login/Login";
+
 //Css
 import style from "./Landing.module.css";
 
@@ -12,10 +14,12 @@ const Landing: React.FC = () => {
     const [loginModal, setLoginModal] = useState<boolean>(false);
     const [signUpModal, setSignUpModal] = useState<boolean>(false);
 
-    const handleLogin = useCallback(
-        (email: string, password: string) => {
-            navigate("/magazines");
-        }, []);
+    function handleLogin(email: string, password: string) {
+        new Login(email, password).start()
+            .then(() => {
+                navigate("/magazines");
+            })
+    }
 
     const handleRegister = useCallback(
         (name: string, middleName: string, email: string, password: string, confirmPassword: string) => {
@@ -34,10 +38,10 @@ const Landing: React.FC = () => {
                 <div className={style["body"]}></div>
             </div>
             {loginModal && (
-                <Login visible={loginModal} closeModal={() => setLoginModal(false)} handleLogin={handleLogin} />
+                <LoginModal visible={loginModal} closeModal={() => setLoginModal(false)} handleLogin={handleLogin} />
             )}
             {signUpModal && (
-                <SignUp visible={signUpModal} closeModal={() => setSignUpModal(false)} handleRegister={handleRegister} />
+                <SignUpModal visible={signUpModal} closeModal={() => setSignUpModal(false)} handleRegister={handleRegister} />
             )}
         </>
     )

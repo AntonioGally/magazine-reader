@@ -3,6 +3,7 @@ import {
     BrowserRouter,
     Routes,
     Route,
+    useLocation,
 } from "react-router-dom";
 
 import WithTemplate from "../Hoc/WithTemplate/WithTemplate";
@@ -10,8 +11,11 @@ import WithTemplate from "../Hoc/WithTemplate/WithTemplate";
 import Landing from "../Pages/Landing/Landing";
 import Magazines from "../Pages/Magazines/Magazines";
 import Editions from "../Pages/Editions/Editions";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 const Router: React.FC = () => {
+
     return (
         <BrowserRouter>
             <Routes>
