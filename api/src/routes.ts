@@ -17,6 +17,7 @@ router.get('/magazine', Auth.authenticateToken, MagazineController.listMagazine)
 //Editions
 router.post('/editions', Auth.authenticateToken, EditionsController.store);
 router.get('/editions', Auth.authenticateToken, EditionsController.listEdition);
+router.get('/all-editions', Auth.authenticateToken, EditionsController.listAllEdition);
 router.post('/test', EditionsController.readSiteMap);
 
 module.exports = router;

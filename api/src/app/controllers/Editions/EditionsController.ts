@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { storeEditions } from "./editions.types";
 import CreateEdition from "./Flows/Create/CreateEdition";
 import ListEditions from "./Flows/List/ListEditions";
+import ListAllEditions from "./Flows/ListAll/ListAllEditions";
 import GetLinksFromDatabase from "./Flows/Read/GetLinksFromDatabase";
 import SiteMapReader from "./Flows/Read/SiteMapReader";
 
@@ -31,6 +32,18 @@ class EditionsController {
     async listEdition(request: Request, response: Response) {
         const magazineId = request.query.magazineId as string;
         const editions = await new ListEditions(magazineId).start();
+        if (!editions || editions.length === 0) {
+            response.status(500).json({ error: "Error on listing edition process" })
+        }
+
+        response.json(editions);
+    }
+
+    async listAllEdition(request: Request, response: Response) {
+        const userId = request.headers["x-userid"];
+        if (typeof userId !== "string") return response.status(400).json({ error: "user id needed" });
+
+        const editions = await new ListAllEditions(userId).start();
         if (!editions || editions.length === 0) {
             response.status(500).json({ error: "Error on listing edition process" })
         }
