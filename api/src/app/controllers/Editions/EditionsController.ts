@@ -53,7 +53,7 @@ class EditionsController {
         if (typeof userId !== "string") return response.status(400).json({ error: "user id needed" });
 
         const editions = await new ListAllEditions(userId).start();
-        if (!editions || editions.length === 0) {
+        if (!editions) {
             response.status(500).json({ error: "Error on listing edition process" })
         }
 

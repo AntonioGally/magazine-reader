@@ -49,7 +49,12 @@ const NewEditions: React.FC = () => {
     ];
 
     const newEditionsArray: any = []
-    newEditionsQuery.forEach((query) => newEditionsArray.push(...query.data?.data));
+    Array.isArray(newEditionsQuery) && newEditionsQuery.forEach((query) => {
+        if (!query.isError && query.data) {
+            newEditionsArray.push(...query.data?.data);
+        }
+    });
+
 
     return (
         <div className={style["wrapper"]}>
