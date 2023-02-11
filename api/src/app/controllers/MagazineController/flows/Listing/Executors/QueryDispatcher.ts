@@ -1,4 +1,4 @@
-import { query } from "../../../../../../database";
+import { query } from "../../../../../database";
 
 export default class QueryDispatcher {
     constructor(

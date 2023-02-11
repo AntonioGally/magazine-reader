@@ -1,5 +1,5 @@
-import { storePayload } from "../../../../magazine.types";
-import { query } from "../../../../../../database";
+import { storePayload } from "../../../magazine.types";
+import { query } from "../../../../../database";
 
 export default class QueryDispatcher {
     constructor(

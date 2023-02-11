@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import MagazineCreator from "./flows/Creation/Magazine/MagazineCreator";
-import ListMagazine from "./flows/Listing/Magazine/ListMagazine";
+import MagazineCreator from "./flows/Creation/MagazineCreator";
+import GetMagazine from "./flows/GetInfo/GetMagazine";
+import ListMagazine from "./flows/Listing/ListMagazine";
 import StoreValidator from "./flows/Validators/Magazine/StoreValidator";
 import { storePayload } from "./magazine.types";
 
@@ -13,7 +14,7 @@ class MagazineController {
         }
         const userId = request.headers["x-userid"];
         if (typeof userId !== "string") return response.status(400).json({ error: "user id needed" });
-        
+
         const magazine = await new MagazineCreator(request.body, userId).start() as unknown[];
 
         if (magazine.length === 0) {
@@ -32,6 +33,19 @@ class MagazineController {
         }
 
         return response.status(200).json(magazines);
+    }
+
+    async getMagazine(request: Request<any, any, { magazineId: string }>, response: Response) {
+        const userId = request.headers["x-userid"];
+        if (typeof userId !== "string") return response.status(400).json({ error: "user id needed" });
+        if (!request.body.magazineId) return response.status(400).json({ error: "magazine id needed" });
+
+        const magazine = await new GetMagazine(request.body.magazineId, userId).start();
+        if (magazine.length === 0 || !magazine) {
+            return response.status(500).json({ error: "Error on magazine listing process" })
+        }
+
+        return response.status(200).json(magazine[0]);
     }
 
 }

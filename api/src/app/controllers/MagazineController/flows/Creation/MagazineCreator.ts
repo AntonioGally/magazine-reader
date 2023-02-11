@@ -1,5 +1,5 @@
 //Types
-import { storePayload } from "../../../magazine.types";
+import { storePayload } from "../../magazine.types";
 //Executors
 import BuildQuery from "./Executors/BuildQuery";
 import QueryDispatcher from "./Executors/QueryDispatcher";

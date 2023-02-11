@@ -1,5 +1,6 @@
 //Types
 import { Request, Response } from "express";
+import GetMagazine from "../MagazineController/flows/GetInfo/GetMagazine";
 import { storeEditions } from "./editions.types";
 import CreateEdition from "./Flows/Create/CreateEdition";
 import ListEditions from "./Flows/List/ListEditions";
@@ -14,15 +15,23 @@ class EditionsController {
     }
 
     async store(request: Request<any, any, storeEditions>, response: Response) {
-        const { siteMap, _indexOf, magazineId } = request.body
-        const updatedLinks = await new SiteMapReader(siteMap, _indexOf).start();
+        const userId = request.headers["x-userid"];
+        const { magazineId } = request.body
+        if (typeof userId !== "string") return response.status(400).json({ error: "user id needed" });
+
+        const [magazineInfo] = await new GetMagazine(magazineId, userId).start();
+        const updatedLinks = await new SiteMapReader(magazineInfo.magazinesitemap, magazineInfo.magazineindexof).start();
         const createdLinks = [];
         for (let i = 0; i < updatedLinks.length; i++) {
             let link = updatedLinks[i];
             let databaseLink = await new GetLinksFromDatabase(link).excute()
             if (databaseLink.length === 0) {
                 await new CreateEdition(link, magazineId).start();
-                createdLinks.push(link);
+                createdLinks.push({
+                    newEdition: link,
+                    magazineName: magazineInfo.magazineName,
+                    magazineUrl: magazineInfo.magazineUrl
+                });
             }
         }
 
