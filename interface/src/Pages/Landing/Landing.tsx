@@ -1,9 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 //Components
 import Button from "../../Components/Button/Button";
 import LoginModal from "../../Modals/Login/Login";
 import SignUpModal from "../../Modals/SignUp/SignUp";
+//Scripts
 import Login from "./Functions/Login/Login";
 
 //Css
@@ -18,6 +20,9 @@ const Landing: React.FC = () => {
         new Login(email, password).start()
             .then(() => {
                 navigate("/magazines");
+            })
+            .catch(() => {
+                toast.error("Verifique email e senha")
             })
     }
 

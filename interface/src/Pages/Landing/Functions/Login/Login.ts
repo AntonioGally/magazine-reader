@@ -13,7 +13,7 @@ export default class Login {
     async start() {
         const dispatch = store.dispatch;
         const user = await new LoginDispatcher(this.email, this.password).execute();
-        if (!user) return toast.error("Verifique Login e senha");
+        if (!user) return
         localStorage.setItem("user_token", user.accessToken);
         localStorage.setItem("user_id", user.userid);
         dispatch(setUser(user));
