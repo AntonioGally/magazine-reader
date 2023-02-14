@@ -2,13 +2,12 @@ const { Client } = require('pg');
 
 const isLocal =
     process.env.LOCAL_DEVELOPMENT === "false" ? false : true || false;
-console.log(process.env.POSTGRES_HOST)
 const client = new Client({
-    host: "localhost",
-    port: 5432,
-    user: 'root',
-    password: 'root',
-    database: 'magazinereader',
+    host: process.env.POSTGRES_HOST,
+    port: process.env.POSTGRES_PORT,
+    user: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD,
+    database: process.env.POSTGRES_DATABASE,
 });
 
 
