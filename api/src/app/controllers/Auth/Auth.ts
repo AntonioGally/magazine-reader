@@ -20,7 +20,7 @@ class Auth {
 
         const dataBaseUser = await new UserValidator(email, password).start();
         if (dataBaseUser.length === 0) {
-            return response.status(203).json({ error: "Verify email and password" })
+            return response.status(400).json({ error: "Verify email and password" })
         }
 
         const user = { email }

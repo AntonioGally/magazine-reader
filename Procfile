@@ -1,0 +1,1 @@
+web: node ./api/src/server.ts

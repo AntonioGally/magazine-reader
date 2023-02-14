@@ -27,12 +27,12 @@ const Editions: React.FC = () => {
         {
             title: "Revista",
             dataIndex: "magazinename",
-            render: (text, record) => <a href={record.magazineurl}>{text}</a>,
+            render: (text, record) => <a target={"_blank"} href={record.magazineurl}>{text}</a>,
         },
         {
             title: "Url",
             dataIndex: "editionurl",
-            render: (text, record) => <a href={record.editionurl}>{text.split("/").at(-1)}</a>
+            render: (text, record) => <a target={"_blank"} href={record.editionurl}>{text.split("/").at(-1)}</a>
         },
         {
             title: "Data de criação",

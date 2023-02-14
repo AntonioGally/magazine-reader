@@ -1,5 +1,5 @@
 //Libs
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useQueries, useQuery } from "react-query";
 //Components
 import Table from "../../Components/Table/Table";
@@ -15,38 +15,39 @@ import { Spin } from "antd";
 
 const NewEditions: React.FC = () => {
 
-    const [isNewEditionLoading, setIsNewEditionLoading] = useState(false);
-
     const magazineQuery = useQuery<magazineType[]>("magazineList", () =>
         authHttp
             .get("/magazine")
             .then((res) => res.data)
     );
 
-
     const newEditionsQuery = useQueries(
-        (magazineQuery.data || []).map(magazine => ({
-            queryKey: ["magazineEditions", magazine.magazineid],
-            queryFn: async () => {
-                setIsNewEditionLoading(true)
-                return authHttp.post("/editions", { magazineId: magazine.magazineid }).finally(() => setIsNewEditionLoading(false))
-            },
-            enabled: !!magazineQuery.data
-        }))
+        (magazineQuery.data || []).map(magazine => {
+            // setIsNewEditionLoading(true)
+            return {
+                queryKey: ["magazineEditions", magazine.magazineid],
+                queryFn: () => {
+                    return authHttp.post("/editions", { magazineId: magazine.magazineid })
+                },
+                enabled: !!magazineQuery.data
+            }
+        })
     )
 
     const getColumns: ColumnsType<newEditionType> = [
         {
             title: "Revista",
             dataIndex: "magazineName",
-            render: (text, record) => <a href={record.magazineUrl}>{text}</a>,
+            render: (text, record) => <a target={"_blank"} href={record.magazineUrl}>{text}</a>,
         },
         {
             title: "Nova edição",
             dataIndex: "newEdition",
-            render: (text, record) => <a href={record.newEdition}>{text.split("/").at(-1)}</a>
+            render: (text, record) => <a target={"_blank"} href={record.newEdition}>{text.split("/").at(-1)}</a>
         },
     ];
+
+
 
     const newEditionsArray: any = []
     Array.isArray(newEditionsQuery) && newEditionsQuery.forEach((query) => {
@@ -54,12 +55,13 @@ const NewEditions: React.FC = () => {
             newEditionsArray.push(...query.data?.data);
         }
     });
-
+    const isLoading =
+        !!newEditionsQuery.find(q => q.isFetching)
 
     return (
         <div className={style["wrapper"]}>
             <Table columns={getColumns} data={newEditionsArray} />
-            <Spin spinning={isNewEditionLoading} size="large" style={{ marginTop: 20 }} />
+            <Spin spinning={isLoading} size="large" style={{ marginTop: 20 }} />
         </div>
     )
 }
