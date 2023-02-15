@@ -1,20 +1,21 @@
-import { ErrorRequestHandler, NextFunction, RequestHandler, Response } from "express";
-
-require("dotenv").config();
-const express = require('express');
-require('express-async-errors');
-const routes = require('./routes');
+// import { config } from "dotenv";
+require('dotenv').config()
+import express from "express"
+import "express-async-errors";
+import { router } from "./routes";
+// config();
 const app = express();
-const cors = require('cors')
+import cors from "cors";
+
 app.use(cors())
 
 app.use(express.json());
-app.use(routes);
+app.use(router);
 
-app.use((error: ErrorRequestHandler, request: RequestHandler, response: Response, next: NextFunction) => {
+app.use((error, request, response, next) => {
     console.log('ERROR HANDLER ##############################');
     console.log(error);
     response.sendStatus(500);
 });
 
-app.listen(8080, () => console.log('Server started at http://localhost:8080'));
+app.listen(process.env.PORT || 8080, () => console.log('Server started'));

@@ -3,11 +3,16 @@ const { Client } = require('pg');
 const isLocal =
     process.env.LOCAL_DEVELOPMENT === "false" ? false : true || false;
 const client = new Client({
-    host: process.env.POSTGRES_HOST,
+    host: String(process.env.POSTGRES_HOST),
     port: process.env.POSTGRES_PORT,
-    user: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
-    database: process.env.POSTGRES_DATABASE,
+    user: String(process.env.POSTGRES_USER),
+    password: String(process.env.POSTGRES_PASSWORD),
+    database: String(process.env.POSTGRES_DATABASE),
+    ...(isLocal ? { ssl: false } : {
+        ssl: {
+            rejectUnauthorized: false,
+        },
+    }),
 });
 
 

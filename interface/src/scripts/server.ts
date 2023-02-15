@@ -1,1 +1,2 @@
-export const serverUrl = process.env.SERVER_HOST;
+export const serverUrl = "https://obclio.herokuapp.com";
+// export const serverUrl = "http://localhost:8080";

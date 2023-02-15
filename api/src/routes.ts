@@ -4,7 +4,7 @@ import MagazineController from "./app/controllers/MagazineController/MagazineCon
 import Auth from "./app/controllers/Auth/Auth";
 import EditionsController from "./app/controllers/Editions/EditionsController";
 
-const router = Router();
+export const router = Router();
 
 //Auth
 router.post("/login", Auth.login);
@@ -22,5 +22,3 @@ router.get('/all-editions', Auth.authenticateToken, EditionsController.listAllEd
 
 
 router.post('/test', EditionsController.readSiteMap);
-
-module.exports = router;
