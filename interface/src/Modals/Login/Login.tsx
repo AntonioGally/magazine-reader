@@ -28,10 +28,15 @@ const Login: React.FC<Props> = ({ visible, closeModal, handleLogin }) => {
         }
     }
 
+    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        verifyForm();
+    }
+
     return (
         <Modal open={visible} onCancel={closeModal} onOk={closeModal} maskClosable closable
             footer={null} title={null} bodyStyle={{ padding: 0 }} width={400}>
-            <form className={style["wrapper"]}>
+            <form className={style["wrapper"]} onSubmit={handleSubmit}>
                 <div>
                     <Label label={"Email:"} />
                     <Input type={"email"} required placeholder="Ex.: antonio.gally@gmail.com" value={formData.email}
@@ -43,7 +48,7 @@ const Login: React.FC<Props> = ({ visible, closeModal, handleLogin }) => {
                         onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))} />
                 </div>
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                    <Button label={"Entrar"} _type={"primary"} onClick={verifyForm} />
+                    <Button label={"Entrar"} _type={"primary"} type="submit" />
                 </div>
             </form>
         </Modal>
