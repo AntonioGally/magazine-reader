@@ -31,7 +31,7 @@ const Login: React.FC<Props> = ({ visible, closeModal, handleLogin }) => {
     return (
         <Modal open={visible} onCancel={closeModal} onOk={closeModal} maskClosable closable
             footer={null} title={null} bodyStyle={{ padding: 0 }} width={400}>
-            <div className={style["wrapper"]}>
+            <form className={style["wrapper"]}>
                 <div>
                     <Label label={"Email:"} />
                     <Input type={"email"} required placeholder="Ex.: antonio.gally@gmail.com" value={formData.email}
@@ -45,7 +45,7 @@ const Login: React.FC<Props> = ({ visible, closeModal, handleLogin }) => {
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
                     <Button label={"Entrar"} _type={"primary"} onClick={verifyForm} />
                 </div>
-            </div>
+            </form>
         </Modal>
     )
 }

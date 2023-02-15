@@ -15,6 +15,7 @@ node_modules
 
 # misc
 .DS_Store
+.env.prod
 .env.local
 .env.development.local
 .env.test.local
@@ -23,3 +24,6 @@ node_modules
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+build
+.env
+dist
