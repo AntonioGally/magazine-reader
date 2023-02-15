@@ -7,13 +7,16 @@ import Button from "../../Components/Button/Button";
 import authHttp from "../../scripts/authHttp";
 //Css
 import style from "./Magazines.module.css";
-import Card from "./Card";
+import Card from "./Components/Card";
 import NewMagazine from "../../Modals/NewMagazine/NewMagazine";
 import { promiseSuccess } from "../../@types/promises";
 import { magazineType } from "./magazines.types";
+import MagazineInfo from "../../Modals/MagazineInfo/MagazineInfo";
 
 const Magazines: React.FC = () => {
     const [newMagazineModal, setNewMagazineModal] = useState<boolean>(false);
+    const [magazineInfo, setMagazineInfo] = useState<{ active: boolean; magazineData: magazineType | null }>();
+
 
     const { isLoading, error, data, isFetching } = useQuery<magazineType[]>("magazineList", () =>
         authHttp
@@ -31,9 +34,17 @@ const Magazines: React.FC = () => {
             </div>
             <div className={style["card-wrapper"]}>
                 {data.map((value, index) => (
-                    <Card {...value} key={index} />
+                    <Card {...value} key={index}
+                        onClick={() => setMagazineInfo({ active: true, magazineData: value })}
+                    />
                 ))}
             </div>
+
+            {magazineInfo && magazineInfo.magazineData && (
+                <MagazineInfo visible={magazineInfo.active} closeModal={() => setMagazineInfo({ active: false, magazineData: null })}
+                    magazineInfo={magazineInfo.magazineData} />
+            )}
+
             {newMagazineModal && (
                 <NewMagazine visible={newMagazineModal} closeModal={() => setNewMagazineModal(false)} />
             )}
