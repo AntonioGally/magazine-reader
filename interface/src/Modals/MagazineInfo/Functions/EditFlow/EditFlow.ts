@@ -8,6 +8,6 @@ export default class EditFlow {
     ) { }
 
     start() {
-        return authHttp.put(`/magazine?magazineid=${this.magazineId}`, { information: this.payload })
+        return authHttp.put(`/magazine?magazineId=${this.magazineId}`, this.payload)
     }
 }
