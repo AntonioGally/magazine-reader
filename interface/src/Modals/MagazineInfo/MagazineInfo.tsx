@@ -8,6 +8,11 @@ import style from "./magazineInfo.module.css";
 import { magazineType } from "../../Pages/Magazines/magazines.types";
 import Informations from "./Tabs/Informations/Informations";
 import Editions from "./Tabs/Editions/Editions";
+import { generateDate } from "../../scripts/utils";
+import { newMagazinePayload } from "../NewMagazine/newMagazine.types";
+import Validator from "../NewMagazine/Functions/Validators/Validator";
+import EditFlow from "./Functions/EditFlow/EditFlow";
+import { toast } from "react-toastify";
 
 interface Props {
     visible: boolean;
@@ -18,6 +23,37 @@ interface Props {
 const MagazineInfo: React.FC<Props> = ({ visible, closeModal, magazineInfo }) => {
 
     const [loading, setLoading] = useState(false);
+
+    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        setLoading(true);
+        event.preventDefault();
+        //@ts-ignore
+        const { title, description, magazineImage, magazineUrl, sitemap, _indexOf } = event.target;
+        const payload = ({
+            name: title.value,
+            description: description.value,
+            image: magazineImage.value,
+            url: magazineUrl.value,
+            creationDate: generateDate(),
+            siteMap: sitemap.value,
+            indexOf: _indexOf.value
+        } as unknown) as newMagazinePayload;
+        const validation = new Validator(payload).start();
+        if (validation.error) {
+            setLoading(false);
+            return;
+        };
+        new EditFlow(payload, magazineInfo.magazineid).start()
+            .then((data) => {
+                toast.success("Revista editada com sucesso!");
+            })
+            .catch(err => {
+                toast.error("Houve algum erro na edição da revista")
+            })
+            .finally(() => {
+                setLoading(false);
+            })
+    }
 
     const getTabs = useMemo(() => {
         return [
@@ -37,7 +73,7 @@ const MagazineInfo: React.FC<Props> = ({ visible, closeModal, magazineInfo }) =>
     return (
         <Modal open={visible} onCancel={closeModal} onOk={closeModal} maskClosable closable
             footer={null} title={null} bodyStyle={{ padding: 0 }} width={700}>
-            <div className={style["wrapper"]}>
+            <form className={style["wrapper"]} onSubmit={handleSubmit}>
                 <Tabs items={getTabs} />
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
                     <Spin spinning={loading}>
@@ -46,7 +82,7 @@ const MagazineInfo: React.FC<Props> = ({ visible, closeModal, magazineInfo }) =>
                         </Button>
                     </Spin>
                 </div>
-            </div>
+            </form>
         </Modal>
     )
 }

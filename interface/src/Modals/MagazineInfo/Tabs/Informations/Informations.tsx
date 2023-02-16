@@ -19,11 +19,11 @@ const Informations: React.FC<Props> = ({ magazineInfo }) => {
                 <div className={style["title-desc-wrapper"]}>
                     <div>
                         <Label label={"Título:"} />
-                        <Input placeholder="" required name="title" defaultValue={magazineInfo.magazinename} disabled />
+                        <Input placeholder="" required name="title" defaultValue={magazineInfo.magazinename} />
                     </div>
                     <div>
                         <Label label={"Descrição:"} />
-                        <TextArea rows={4} name="description" defaultValue={magazineInfo.magazinedescription} disabled />
+                        <TextArea rows={4} name="description" defaultValue={magazineInfo.magazinedescription} />
                     </div>
                 </div>
             </div>
@@ -31,22 +31,22 @@ const Informations: React.FC<Props> = ({ magazineInfo }) => {
                 <div className={style["col"]} style={{ marginRight: "2%" }}>
                     <div style={{ marginBottom: 10 }}>
                         <Label label={"Imagem:"} />
-                        <Input placeholder="http://..." required name="magazineImage" defaultValue={magazineInfo.magazineimage} disabled />
+                        <Input placeholder="http://..." required name="magazineImage" defaultValue={magazineInfo.magazineimage} />
                     </div>
                     <div>
                         <Label label={"URL:"} />
-                        <Input placeholder="http://..." required name="magazineUrl" defaultValue={magazineInfo.magazineurl} disabled />
+                        <Input placeholder="http://..." required name="magazineUrl" defaultValue={magazineInfo.magazineurl} />
                     </div>
                 </div>
 
                 <div className={style["col"]}>
                     <div style={{ marginBottom: 10 }}>
                         <Label label={"Sitemap:"} />
-                        <Input required name="sitemap" defaultValue={magazineInfo.magazinesitemap} disabled />
+                        <Input required name="sitemap" defaultValue={magazineInfo.magazinesitemap} />
                     </div>
                     <div>
                         <Label label={"Pesquisar por:"} />
-                        <Input required name="indexof" defaultValue={magazineInfo.magazineindexof} disabled />
+                        <Input required name="indexof" defaultValue={magazineInfo.magazineindexof} />
                     </div>
                 </div>
             </div>

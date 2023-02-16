@@ -44,7 +44,6 @@ const NewMagazine: React.FC<Props> = ({ visible, closeModal }) => {
         };
         new CreateFlow(payload).execute()
             .then((data) => {
-                console.log(data)
                 toast.success("Revista criada com sucesso!");
             })
             .catch(err => {

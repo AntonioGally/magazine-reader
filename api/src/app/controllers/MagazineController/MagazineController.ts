@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import MagazineCreator from "./flows/Creation/MagazineCreator";
+import Edit from "./flows/Edit/Edit";
 import GetMagazine from "./flows/GetInfo/GetMagazine";
 import ListMagazine from "./flows/Listing/ListMagazine";
 import StoreValidator from "./flows/Validators/Magazine/StoreValidator";
@@ -46,6 +47,19 @@ class MagazineController {
         }
 
         return response.status(200).json(magazine[0]);
+    }
+
+    //Edit
+    async editMagazine(request: Request<any, any, storePayload["information"]>, response: Response) {
+        const userId = request.headers["x-userid"];
+        let magazineId = request.query.magazineId as string;
+        if (typeof userId !== "string") return response.status(400).json({ error: "user id needed" });
+        if (!magazineId) return response.status(400).json({ error: "magazine id needed" });
+
+        const editedMagazine = await new Edit(request.body, magazineId, userId).start()
+        if (!editedMagazine || editedMagazine.length === 0) return response.status(500).json({ error: "Error on magazine editing process" });
+
+        return response.status(200).json(editedMagazine[0]);
     }
 
 }
