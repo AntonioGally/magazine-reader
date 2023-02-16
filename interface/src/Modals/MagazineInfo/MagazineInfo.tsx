@@ -15,6 +15,7 @@ import EditFlow from "./Functions/EditFlow/EditFlow";
 import { toast } from "react-toastify";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import DeleteFlow from "./Functions/DeleteFlow/DeleteFlow";
+import NewEditions from "./Tabs/NewEditions/NewEditions";
 
 interface Props {
     visible: boolean;
@@ -61,6 +62,11 @@ const MagazineInfo: React.FC<Props> = ({ visible, closeModal, magazineInfo }) =>
                 key: "1",
                 label: "Edições",
                 children: <Editions magazineInfo={magazineInfo} />
+            },
+            {
+                key: "2",
+                label: "Novas edições",
+                children: <NewEditions magazineInfo={magazineInfo} />
             }
         ]
     }, [])
