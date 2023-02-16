@@ -12,8 +12,12 @@ import { magazineType } from "../Magazines/magazines.types";
 import { ColumnsType } from "antd/lib/table";
 import { newEditionType } from "./newEditions.types";
 import { Spin } from "antd";
+import { toast } from "react-toastify";
 
 const NewEditions: React.FC = () => {
+
+    const [_editionsArray, setEditionsArray] = useState<any[]>([])
+    const [loading, setLoading] = useState({ magazineName: "", loading: false });
 
     const magazineQuery = useQuery<magazineType[]>("magazineList", () =>
         authHttp
@@ -21,18 +25,29 @@ const NewEditions: React.FC = () => {
             .then((res) => res.data)
     );
 
-    const newEditionsQuery = useQueries(
-        (magazineQuery.data || []).map(magazine => {
-            // setIsNewEditionLoading(true)
-            return {
-                queryKey: ["magazineEditions", magazine.magazineid],
-                queryFn: () => {
-                    return authHttp.post("/editions", { magazineId: magazine.magazineid })
-                },
-                enabled: !!magazineQuery.data
+    function getEditons(magazineId: string) {
+        return authHttp.post("/editions", { magazineId })
+    }
+
+    async function fetchEditions(magazines: magazineType[]) {
+        for (let i = 0; i < magazines.length; i++) {
+            let magazine = magazines[i];
+            setLoading({ magazineName: magazine.magazinename, loading: true });
+            try {
+                const editions = await getEditons(magazine.magazineid)
+                setEditionsArray((prev) => [...prev, ...editions.data]);
+            } catch (err) {
+                toast.error("Não foi possível cadastrar as edições da revista" + magazine.magazinename)
+                console.error(err)
             }
-        })
-    )
+            setLoading({ magazineName: "", loading: false });
+        }
+    }
+
+    useEffect(function () {
+        if (!magazineQuery.data) return;
+        fetchEditions(magazineQuery.data);
+    }, [magazineQuery.data])
 
     const getColumns: ColumnsType<newEditionType> = [
         {
@@ -47,21 +62,15 @@ const NewEditions: React.FC = () => {
         },
     ];
 
-
-
-    const newEditionsArray: any = []
-    Array.isArray(newEditionsQuery) && newEditionsQuery.forEach((query) => {
-        if (!query.isError && query.data) {
-            newEditionsArray.push(...query.data?.data);
-        }
-    });
-    const isLoading =
-        !!newEditionsQuery.find(q => q.isFetching)
-
     return (
         <div className={style["wrapper"]}>
-            <Table columns={getColumns} data={newEditionsArray} />
-            <Spin spinning={isLoading} size="large" style={{ marginTop: 20 }} />
+            <Table columns={getColumns} data={_editionsArray} />
+            {loading.loading && (
+                <div className={style["loading-wrapper"]}>
+                    <span>Carregando edições da revista: <b>{loading.magazineName}</b></span>
+                    <Spin size="large" />
+                </div>
+            )}
         </div>
     )
 }
