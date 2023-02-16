@@ -38,10 +38,11 @@ const MagazineInfo: React.FC<Props> = ({ visible, closeModal, magazineInfo }) =>
         }
     })
 
-    const deleteMagazine = useQuery<any>("deleteMagazine", () => new DeleteFlow(magazineInfo.magazineid).start(), {
-        enabled: false,
+    const deleteMagazine = useMutation({
+        mutationFn: () => new DeleteFlow(magazineInfo.magazineid).start(),
         onSuccess: () => {
             toast.success("Revista deletada com sucesso!");
+            queryClient.invalidateQueries({ queryKey: "magazineList" });
             setTimeout(() => closeModal(), 500);
         },
         onError: () => {
@@ -85,7 +86,7 @@ const MagazineInfo: React.FC<Props> = ({ visible, closeModal, magazineInfo }) =>
     }
 
     function handleDelete() {
-        deleteMagazine.refetch();
+        deleteMagazine.mutate();
     }
 
     return (
