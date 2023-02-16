@@ -1,5 +1,5 @@
 //Libs
-import React from "react";
+import React, { memo } from "react";
 //Interface
 import { magazineType } from "../magazines.types";
 //Css
@@ -16,4 +16,4 @@ const Card: React.FC<props> = (props) => {
     )
 }
 
-export default Card;
+export default memo(Card);
