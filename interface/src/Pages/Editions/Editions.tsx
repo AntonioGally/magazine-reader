@@ -32,7 +32,12 @@ const Editions: React.FC = () => {
         {
             title: "Url",
             dataIndex: "editionurl",
-            render: (text, record) => <a target={"_blank"} href={record.editionurl}>{text.split("/").at(-1)}</a>
+            render: (text, record) => <a target={"_blank"} href={record.editionurl}>{text.split("/").at(-1)}</a>,
+            sorter: (a, b) => {
+                let _a = Number(a.editionurl.split("/").at(-1));
+                let _b = Number(b.editionurl.split("/").at(-1));
+                return _a - _b;
+            }
         },
         {
             title: "Data de criação",

@@ -13,6 +13,7 @@ import { newMagazinePayload } from "./newMagazine.types";
 import CreateFlow from "./Functions/CreateFlow/CreateFlow";
 import { toast } from "react-toastify";
 import { generateDate } from "../../scripts/utils";
+import { useMutation, useQueryClient } from "react-query";
 
 interface Props {
     visible: boolean;
@@ -21,10 +22,20 @@ interface Props {
 
 const NewMagazine: React.FC<Props> = ({ visible, closeModal }) => {
 
-    const [loading, setLoading] = useState(false);
+    const queryClient = useQueryClient()
+    const newMagazine = useMutation({
+        mutationFn: (payload: newMagazinePayload) => new CreateFlow(payload).execute(),
+        onSuccess: () => {
+            toast.success("Revista criada com sucesso");
+            queryClient.invalidateQueries({ queryKey: "magazineList" });
+            closeModal();
+        },
+        onError: () => {
+            toast.error("Houve algum erro ao criar uma nova revista");
+        }
+    })
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        setLoading(true);
         event.preventDefault();
         //@ts-ignore
         const { title, description, magazineImage, magazineUrl, sitemap, _indexOf } = event.target;
@@ -39,21 +50,11 @@ const NewMagazine: React.FC<Props> = ({ visible, closeModal }) => {
         } as unknown) as newMagazinePayload;
         const validation = new Validator(payload).start();
         if (validation.error) {
-            setLoading(false);
             return;
         };
-        new CreateFlow(payload).execute()
-            .then((data) => {
-                console.log(data)
-                toast.success("Revista criada com sucesso!");
-            })
-            .catch(err => {
-                toast.error("Houve algum erro na criação da revista")
-            })
-            .finally(() => {
-                setLoading(false);
-            })
+        newMagazine.mutate(payload)
     }
+
 
     const getTabs = useMemo(() => {
         return [
@@ -77,7 +78,7 @@ const NewMagazine: React.FC<Props> = ({ visible, closeModal }) => {
             <form className={style["wrapper"]} onSubmit={handleSubmit}>
                 <Tabs items={getTabs} />
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                    <Spin spinning={loading}>
+                    <Spin spinning={newMagazine.isLoading}>
                         <Button _type="primary" style={{ margin: "10px 0" }} type="submit">
                             <span>Cadastrar</span>
                         </Button>

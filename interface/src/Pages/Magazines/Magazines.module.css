@@ -6,8 +6,19 @@
     flex-direction: column;
 }
 
+.input-search-wrapper {
+    margin-top: 15px;
+    width: 30%;
+}
+
+@media (max-width: 768px) {
+    .input-search-wrapper {
+        width: 70%;
+    }
+}
+
 .card-wrapper {
-    margin-top: 18px;
+    /* margin-top: 12px; */
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;

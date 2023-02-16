@@ -13,7 +13,10 @@ router.post("/signUp", Auth.signUp);
 //Magazine
 router.post('/magazine', Auth.authenticateToken, MagazineController.storeMagazine);
 router.get('/magazine', Auth.authenticateToken, MagazineController.listMagazine);
-router.post('/get-magazine', Auth.authenticateToken, MagazineController.getMagazine);
+router.put('/magazine', Auth.authenticateToken, MagazineController.editMagazine);
+router.delete('/magazine', Auth.authenticateToken, MagazineController.deleteMagazine);
+router.get('/get-magazine', Auth.authenticateToken, MagazineController.getMagazine);
+
 
 //Editions
 router.post('/editions', Auth.authenticateToken, EditionsController.store);
