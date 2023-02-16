@@ -13,6 +13,8 @@ import { newMagazinePayload } from "../NewMagazine/newMagazine.types";
 import Validator from "../NewMagazine/Functions/Validators/Validator";
 import EditFlow from "./Functions/EditFlow/EditFlow";
 import { toast } from "react-toastify";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import DeleteFlow from "./Functions/DeleteFlow/DeleteFlow";
 
 interface Props {
     visible: boolean;
@@ -22,7 +24,30 @@ interface Props {
 
 const MagazineInfo: React.FC<Props> = ({ visible, closeModal, magazineInfo }) => {
 
-    const [loading, setLoading] = useState(false);
+
+    const queryClient = useQueryClient()
+    const editMagazine = useMutation({
+        mutationFn: ({ payload, magazineId }: { payload: newMagazinePayload, magazineId: string }) => new EditFlow(payload, magazineId).start(),
+        onSuccess: () => {
+            toast.success("Revista editada com sucesso");
+            queryClient.invalidateQueries({ queryKey: "magazineList" });
+            setTimeout(() => closeModal(), 500);
+        },
+        onError: () => {
+            toast.error("Houve algum erro ao editar esta revista");
+        }
+    })
+
+    const deleteMagazine = useQuery<any>("deleteMagazine", () => new DeleteFlow(magazineInfo.magazineid).start(), {
+        enabled: false,
+        onSuccess: () => {
+            toast.success("Revista deletada com sucesso!");
+            setTimeout(() => closeModal(), 500);
+        },
+        onError: () => {
+            toast.error("Erro ao deletar revista");
+        }
+    })
 
     const getTabs = useMemo(() => {
         return [
@@ -40,8 +65,6 @@ const MagazineInfo: React.FC<Props> = ({ visible, closeModal, magazineInfo }) =>
     }, [])
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        console.log("entrei")
-        setLoading(true);
         event.preventDefault();
         //@ts-ignore
         const { title, description, magazineImage, magazineUrl, sitemap, indexof } = event.target;
@@ -56,20 +79,13 @@ const MagazineInfo: React.FC<Props> = ({ visible, closeModal, magazineInfo }) =>
         } as unknown) as newMagazinePayload;
         const validation = new Validator(payload).start();
         if (validation.error) {
-            setLoading(false);
             return;
         };
-        new EditFlow(payload, magazineInfo.magazineid).start()
-            .then((data) => {
-                toast.success("Revista editada com sucesso!");
-                closeModal();
-            })
-            .catch(err => {
-                toast.error("Houve algum erro na edição da revista")
-            })
-            .finally(() => {
-                setLoading(false);
-            })
+        editMagazine.mutate({ payload, magazineId: magazineInfo.magazineid })
+    }
+
+    function handleDelete() {
+        deleteMagazine.refetch();
     }
 
     return (
@@ -78,7 +94,12 @@ const MagazineInfo: React.FC<Props> = ({ visible, closeModal, magazineInfo }) =>
             <form className={style["wrapper"]} onSubmit={handleSubmit}>
                 <Tabs items={getTabs} />
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                    <Spin spinning={loading}>
+                    <Spin spinning={deleteMagazine.isLoading}>
+                        <Button _type="danger" style={{ margin: "10px 15px" }} type="button" onClick={handleDelete}>
+                            <span>Deletar</span>
+                        </Button>
+                    </Spin>
+                    <Spin spinning={editMagazine.isLoading}>
                         <Button _type="primary" style={{ margin: "10px 0" }} type="submit">
                             <span>Editar</span>
                         </Button>
