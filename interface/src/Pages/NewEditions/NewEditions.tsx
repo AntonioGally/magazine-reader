@@ -35,7 +35,7 @@ const NewEditions: React.FC = () => {
             setLoading({ magazineName: magazine.magazinename, loading: true });
             try {
                 const editions = await getEditons(magazine.magazineid)
-                setEditionsArray(editions.data);
+                setEditionsArray((prev) => [...prev, ...editions.data]);
             } catch (err) {
                 toast.error("Não foi possível cadastrar as edições da revista" + magazine.magazinename)
                 console.error(err)

@@ -51,7 +51,7 @@ const MagazineInfo: React.FC<Props> = ({ visible, closeModal, magazineInfo }) =>
         }
     })
 
-    const getTabs = useMemo(() => {
+    function getTabs() {
         return [
             {
                 key: "0",
@@ -69,7 +69,7 @@ const MagazineInfo: React.FC<Props> = ({ visible, closeModal, magazineInfo }) =>
                 children: <NewEditions magazineInfo={magazineInfo} />
             }
         ]
-    }, [])
+    }
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -99,7 +99,7 @@ const MagazineInfo: React.FC<Props> = ({ visible, closeModal, magazineInfo }) =>
         <Modal open={visible} onCancel={closeModal} onOk={closeModal} maskClosable closable
             footer={null} title={null} bodyStyle={{ padding: 0 }} width={700}>
             <form className={style["wrapper"]} onSubmit={handleSubmit}>
-                <Tabs items={getTabs} />
+                <Tabs items={getTabs()} />
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
                     <Spin spinning={deleteMagazine.isLoading}>
                         <Button _type="danger" style={{ margin: "10px 15px" }} type="button" onClick={handleDelete}>
