@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import MagazineCreator from "./flows/Creation/MagazineCreator";
 import Delete from "./flows/Delete/Delete";
+import DeleteEdition from "../Editions/Flows/Delete/Delete";
 import Edit from "./flows/Edit/Edit";
 import GetMagazine from "./flows/GetInfo/GetMagazine";
 import ListMagazine from "./flows/Listing/ListMagazine";
@@ -71,8 +72,9 @@ class MagazineController {
         if (typeof userId !== "string") return response.status(400).json({ error: "user id needed" });
         if (!magazineId) return response.status(400).json({ error: "magazine id needed" });
 
+        const deletedEditions = await new DeleteEdition(magazineId).start();
         const deletedMagazine = await new Delete(userId, magazineId).start();
-        if (!deletedMagazine) return response.status(500).json({ error: "Error on magazine deleting process" });
+        if (!deletedMagazine || !deletedEditions) return response.status(500).json({ error: "Error on magazine deleting process" });
 
         return response.sendStatus(200);
     }
