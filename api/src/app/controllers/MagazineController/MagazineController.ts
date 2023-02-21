@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import MagazineCreator from "./flows/Creation/MagazineCreator";
 import Delete from "./flows/Delete/Delete";
 import DeleteEdition from "../Editions/Flows/Delete/Delete";
@@ -27,7 +27,7 @@ class MagazineController {
     }
 
     //Lists
-    async listMagazine(request: Request, response: Response) {
+    async listMagazines(request: Request, response: Response) {
         const userId = request.headers["x-userid"];
         if (typeof userId !== "string") return response.status(400).json({ error: "user id needed" });
         const magazines = await new ListMagazine(userId).start();
@@ -36,6 +36,55 @@ class MagazineController {
         }
 
         return response.status(200).json(magazines);
+    }
+
+    async paginatedMagazines(request: Request, response: Response) {
+        const userId = request.headers["x-userid"];
+
+        if (typeof userId !== "string") return response.status(400).json({ error: "user id needed" });
+        const magazines = await new ListMagazine(userId).start();
+        if (!magazines) {
+            return response.status(500).json({ error: "Error on magazine listing process" })
+        }
+
+        const page = parseInt(request.query.page as string);
+        const limit = parseInt(request.query.limit as string);
+        const query = request.query.q as string || "";
+
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+
+        const results = {} as any;
+        if (endIndex < magazines.length) {
+            results.next = {
+                page: page + 1,
+                limit: limit,
+            };
+        }
+
+        if (startIndex > 0) {
+            results.previous = {
+                page: page - 1,
+                limit: limit,
+            };
+        }
+        
+        let sortedMagazines = magazines.slice().sort((a, b) => {
+            let _a = new Date(a.magazinecreateddate).getTime();
+            let _b = new Date(b.magazinecreateddate).getTime();
+            return _a > _b ? -1 : 1;
+        })
+
+        let filteredMagazines = sortedMagazines.filter(magazine => {
+            let _name = magazine.magazinename.trim().toLowerCase();
+            let _search = query.trim().toLowerCase();
+            return _name.indexOf(_search) > -1;
+        })
+
+        results.totalRecords = filteredMagazines.length;
+        results.results = filteredMagazines.slice(startIndex, endIndex);
+
+        response.status(200).json(results);
     }
 
     async getMagazine(request: Request<any, any, { magazineId: string }>, response: Response) {

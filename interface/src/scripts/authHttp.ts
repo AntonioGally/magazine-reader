@@ -3,7 +3,7 @@ import axios from 'axios';
 import { serverUrl } from './server';
 
 const instance = axios.create({
-    baseURL: serverUrl
+    baseURL: serverUrl || process.env.SERVER_HOST
 });
 
 instance.interceptors.request.use(request => {

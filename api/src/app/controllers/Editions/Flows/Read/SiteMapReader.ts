@@ -30,7 +30,7 @@ export default class SiteMapReader {
                     resolve(filteredLinks)
                 })
                 .catch((err) => {
-                    throw new Error(err);
+                    reject(err)
                 })
         })
     }
