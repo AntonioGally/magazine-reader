@@ -1,4 +1,4 @@
-const { Router } = require('express');
+import { Router } from "express";
 //Controllers
 import MagazineController from "./app/controllers/MagazineController/MagazineController";
 import Auth from "./app/controllers/Auth/Auth";
@@ -22,6 +22,3 @@ router.get('/get-magazine', Auth.authenticateToken, MagazineController.getMagazi
 router.post('/editions', Auth.authenticateToken, EditionsController.store);
 router.get('/editions', Auth.authenticateToken, EditionsController.listEdition);
 router.get('/all-editions', Auth.authenticateToken, EditionsController.listAllEdition);
-
-
-router.post('/test', EditionsController.readSiteMap);

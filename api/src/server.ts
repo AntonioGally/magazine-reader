@@ -2,7 +2,8 @@
 require('dotenv').config()
 import express from "express"
 import "express-async-errors";
-import { router } from "./routes";
+// import { router } from "./routes";
+import { router } from "./Router/Router";
 // config();
 const app = express();
 import cors from "cors";
