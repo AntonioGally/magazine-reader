@@ -10,7 +10,8 @@ export default class MagazinesRouter {
 
     execute() {
         this.router.post('/magazine', Auth.authenticateToken, MagazineController.storeMagazine);
-        this.router.get('/magazine', Auth.authenticateToken, MagazineController.listMagazine);
+        this.router.get('/magazines', Auth.authenticateToken, MagazineController.listMagazines);
+        this.router.get('/magazines/paginated', Auth.authenticateToken, MagazineController.paginatedMagazines);
         this.router.put('/magazine', Auth.authenticateToken, MagazineController.editMagazine);
         this.router.delete('/magazine', Auth.authenticateToken, MagazineController.deleteMagazine);
         this.router.get('/get-magazine', Auth.authenticateToken, MagazineController.getMagazine);
