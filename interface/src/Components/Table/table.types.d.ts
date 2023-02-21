@@ -6,4 +6,5 @@ export type Props = {
     data?: any;
     columns: any
     loading?: boolean;
+    title?: string;
 }

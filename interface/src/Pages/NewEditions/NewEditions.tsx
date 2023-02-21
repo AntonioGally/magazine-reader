@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import Loading from "../../Components/Loading/Loading";
 //Scripts
 import authHttp from "../../scripts/authHttp";
-import { sliceIntoChunks } from "../../scripts/utils";
+import { getFormattedDate, sliceIntoChunks } from "../../scripts/utils";
 //Css
 import style from "./newEditions.module.css";
 //Types
@@ -16,44 +16,52 @@ import { magazineType } from "../Magazines/magazines.types";
 import { ColumnsType } from "antd/lib/table";
 import { newEditionType } from "./newEditions.types";
 //Store
-import { clearNewEditions, setNewEditions } from "../../store/newEditions/newEditions.action";
+import { clearNewEditions, setNewEditions, setFailedMagazines, clearFailedMagazines } from "../../store/newEditions/newEditions.action";
 import { RootState } from "../../store/store";
 import { promiseSuccess } from "../../@types/general";
-import { Button } from "antd";
+import { Button, Progress } from "antd";
 
 const NewEditions: React.FC = () => {
-    const editionsArray = useSelector((state: RootState) => state.newEditions.editionsArray)
+    const { editionsArray, failedMagazines } = useSelector((state: RootState) => state.newEditions)
     const dispatch = useDispatch();
     const [loading, setLoading] = useState({ magazineName: [""], loading: false });
+    const [magazinePercent, setMagazinePercent] = useState(0);
 
     const magazineQuery = useQuery<magazineType[]>("magazineList", {
         queryFn: () => authHttp.get("/magazines").then((res) => res.data)
     })
 
     function getEditons(magazineId: string): Promise<promiseSuccess<newEditionType[]>> {
-        return authHttp.post("/editions", { magazineId })
+        return new Promise((resolve, reject) => {
+            authHttp.post("/editions", { magazineId })
+                .then((data) => {
+                    dispatch(setNewEditions(data.data))
+                    resolve(data.data)
+                })
+                .catch((err) => {
+                    dispatch(setFailedMagazines(err.response.data.magazineInfo))
+                    toast.error("Não foi possível cadastrar edições da revista" + err.response.data.magazineInfo.magazinename)
+                    reject(err)
+                })
+        })
     }
 
     async function fetchEditions(magazines: magazineType[]) {
         let requestChunk: magazineType[][] = sliceIntoChunks(magazines, 3);
         for (let chunkIdx = 0; chunkIdx < requestChunk.length; chunkIdx++) {
-            let chunk = requestChunk[chunkIdx]
+            let chunk = requestChunk[chunkIdx];
+            let currentMagazineId = "";
+            setMagazinePercent(Math.floor(((chunkIdx + 1) * 100) / requestChunk.length));
+
             setLoading({ magazineName: chunk.map(c => c.magazinename), loading: true })
             try {
-                const [edition0, edition1, edition2] = await Promise.all([getEditons(chunk[0].magazineid), getEditons(chunk[1].magazineid), getEditons(chunk[2].magazineid)])
-                dispatch(setNewEditions([...edition0.data, ...edition1.data, ...edition2.data]))
-            } catch (err) {
-                toast.error("Não foi possível cadastrar edições")
-                console.error(err)
+                await Promise.all(chunk.map(ch => getEditons(ch.magazineid)))
+                setLoading({ magazineName: [""], loading: false })
+            } catch {
+                setLoading({ magazineName: [""], loading: false })
             }
-            setLoading({ magazineName: [""], loading: false })
         }
     }
-
-    useEffect(function () {
-        if (!magazineQuery.data || editionsArray) return;
-        fetchEditions(magazineQuery.data);
-    }, [magazineQuery.data])
 
     const getColumns: ColumnsType<newEditionType> = [
         {
@@ -68,20 +76,39 @@ const NewEditions: React.FC = () => {
         },
     ];
 
+    const getLogTableColumns: ColumnsType<magazineType> = [
+        {
+            title: "Revista",
+            dataIndex: "magazinename",
+            render: (text, record) => <a target={"_blank"} href={record.magazineurl}>{text}</a>,
+        },
+        {
+            title: "Data de criação",
+            dataIndex: "magazinecreateddate",
+            render: (text, record) => <span>{getFormattedDate(record.magazinecreateddate).dateString}</span>,
+        },
+        {
+            title: "Id",
+            dataIndex: "magazineid",
+        }
+    ]
+
     return (
         <div className={style["wrapper"]}>
             <div style={{ marginBottom: 20 }}>
                 <Button onClick={() => {
                     dispatch(clearNewEditions())
+                    dispatch(clearFailedMagazines())
                     fetchEditions(magazineQuery.data as magazineType[]);
                 }} type="primary">
                     Escanear
                 </Button>
             </div>
-            <Table columns={getColumns} data={editionsArray} />
+            <Table columns={getColumns} data={editionsArray} title={"Novas edições cadastradas"} />
             {loading.loading && (
                 <>
                     <div className={style["loading-wrapper"]}>
+                        <Progress percent={magazinePercent} style={{ width: "40%", marginTop: 10 }} />
                         <span>Carregando edições das revistas:</span>
                         <ul>
                             {loading.magazineName.map(magazineName => (
@@ -89,8 +116,13 @@ const NewEditions: React.FC = () => {
                             ))}
                         </ul>
                     </div>
-                    <Loading message="" />
+                    <Loading message="" style={{ marginTop: "2%" }} />
                 </>
+            )}
+            {failedMagazines && (
+                <div style={{ marginTop: 20 }}>
+                    <Table columns={getLogTableColumns} data={failedMagazines} title={"Revistas com erro de cadastro de edição"} />
+                </div>
             )}
         </div>
     )

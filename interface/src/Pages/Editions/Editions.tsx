@@ -142,6 +142,7 @@ const Editions: React.FC = () => {
                     defaultPageSize: 20,
                     showTotal: (total) => <span className={style["pagination-total"]}>{total}</span>
                 }}
+                scroll={{ y: 500 }}
                 loading={isLoading}
                 onChange={(pagination, filters, sorter, extra) => {
                     if (pagination) {

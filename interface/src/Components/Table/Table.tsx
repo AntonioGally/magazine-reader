@@ -101,13 +101,15 @@ const Table: React.FC<Props> = (props) => {
                 />
             </div>
             <ANTTable columns={editedColumns || props.columns} dataSource={filteredContent || props.data} bordered
+                {...props.title && { title: (data) => <span>{props.title}</span> }}
                 pagination={{
                     position: ["bottomRight"],
                     showSizeChanger: true,
                     hideOnSinglePage: true,
                 }}
                 loading={props.loading}
-                size={"middle"} />
+                size={"middle"}
+            />
         </>
     )
 }
