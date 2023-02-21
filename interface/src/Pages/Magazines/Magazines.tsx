@@ -11,10 +11,11 @@ import MagazineInfo from "../../Modals/MagazineInfo/MagazineInfo";
 import authHttp from "../../scripts/authHttp";
 //Css
 import style from "./Magazines.module.css";
-import { magazineType, paginatedMagazine } from "./magazines.types";
+import { magazineType } from "./magazines.types";
 //Assets
 import { SearchOutlined } from '@ant-design/icons';
 import Loading from "../../Components/Loading/Loading";
+import { paginatedType } from "../../@types/general";
 
 const Magazines: React.FC = () => {
     const [newMagazineModal, setNewMagazineModal] = useState<boolean>(false);
@@ -27,7 +28,7 @@ const Magazines: React.FC = () => {
     const [page, setPage] = useState(1);
 
 
-    const { isLoading, error, data, isFetching } = useQuery<paginatedMagazine>(["magazineList", page, query], () =>
+    const { isLoading, error, data, isFetching } = useQuery<paginatedType<magazineType[]>>(["magazineList", page, query], () =>
         authHttp
             .get(`/magazines/paginated?page=${page}&limit=20&q=${query}`)
             .then((res) => res.data)

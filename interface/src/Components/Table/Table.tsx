@@ -88,9 +88,6 @@ const Table: React.FC<Props> = (props) => {
         setEditedColumns((prev: any) => prev.map((column: any) => ({
             ...column,
             ...getColumnFilterProps(column.dataIndex),
-            // ...(defaultFilterByColumn && (column.dataIndex === defaultFilterByColumn.dataIndex) ? {
-            //     filteredValue: [defaultFilterByColumn.value]
-            // } : {})
         })))
     }, []);
 
@@ -103,12 +100,17 @@ const Table: React.FC<Props> = (props) => {
                     }}
                 />
             </div>
-            <ANTTable columns={editedColumns || props.columns} dataSource={filteredContent || props.data} bordered
-                pagination={{
-                    position: ["bottomRight"],
-                    showSizeChanger: true,
-                    hideOnSinglePage: true
-                }} loading={props.loading}
+            <ANTTable columns={editedColumns || props.columns} dataSource={filteredContent || props.paginatedData?.results} bordered
+                {...props.paginatedData && {
+                    pagination: {
+                        position: ["bottomRight"],
+                        showSizeChanger: true,
+                        hideOnSinglePage: true,
+                        total: props.paginatedData.pageCount
+                    }
+                }}
+                loading={props.loading}
+                onChange={(pagination, filters, sorter, extra) => { }}
                 size={"middle"} />
         </>
     )

@@ -42,7 +42,7 @@ class EditionsController {
     async listEdition(request: Request, response: Response) {
         const magazineId = request.query.magazineId as string;
         const editions = await new ListEditions(magazineId).start();
-        if (!editions || editions.length === 0) {
+        if (!editions) {
             response.status(500).json({ error: "Error on listing edition process" })
         }
 

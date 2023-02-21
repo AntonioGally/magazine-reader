@@ -11,16 +11,16 @@ import style from "./editions.module.css";
 import { editionType } from "./editions.types";
 import { ColumnsType } from "antd/lib/table";
 import { getFormattedDate } from "../../scripts/utils";
+import { paginatedType } from "../../@types/general";
 
 const Editions: React.FC = () => {
 
-    const { isLoading, error, data, isFetching } = useQuery<editionType[]>("editionList", () =>
+    const { isLoading, error, data } = useQuery<paginatedType<editionType[]>>("editionList", () =>
         authHttp
             .get("/all-editions")
             .then((res) => res.data)
     );
 
-    if (isLoading || !data) return <span>Loading...</span>
     if (error) return <span>An error has occurred</span>;
 
     const getTableCol: ColumnsType<editionType> = [
@@ -50,7 +50,8 @@ const Editions: React.FC = () => {
 
     return (
         <div className={style["wrapper"]}>
-            <Table columns={getTableCol} data={data} />
+            <Table columns={getTableCol} paginatedData={data} loading={isLoading}
+                onChange={(e) => { }} />
         </div>
     )
 }

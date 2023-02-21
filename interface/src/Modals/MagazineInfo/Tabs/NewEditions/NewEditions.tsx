@@ -2,6 +2,7 @@ import { Spin } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import React from "react";
 import { useQuery } from "react-query";
+import Loading from "../../../../Components/Loading/Loading";
 import Table from "../../../../Components/Table/Table";
 import { magazineType } from "../../../../Pages/Magazines/magazines.types";
 import authHttp from "../../../../scripts/authHttp";
@@ -11,13 +12,13 @@ type Props = {
 }
 
 const NewEditions: React.FC<Props> = ({ magazineInfo }) => {
-    const { isLoading, error, data, isFetching } = useQuery<any>("singleNewEditionList", () =>
+    const { isLoading, error, data, isFetching } = useQuery<any>(["singleNewEditionList", magazineInfo.magazineid], () =>
         authHttp
             .post(`/editions`, { magazineId: magazineInfo.magazineid })
             .then((res) => res.data)
     );
 
-    if (isLoading || !data) return <Spin size="default" />
+    if (isLoading || !data) return <Loading message={`Listando novas edições`} />
     if (error) return <span>An error has occurred</span>;
 
     const getTableCol: ColumnsType<any> = [
@@ -35,7 +36,6 @@ const NewEditions: React.FC<Props> = ({ magazineInfo }) => {
 
     return (
         <Table columns={getTableCol} data={data} />
-        // <></>
     )
 }
 
