@@ -49,6 +49,7 @@ class MagazineController {
 
         const page = parseInt(request.query.page as string);
         const limit = parseInt(request.query.limit as string);
+        const query = request.query.q as string;
 
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
@@ -57,18 +58,25 @@ class MagazineController {
         if (endIndex < magazines.length) {
             results.next = {
                 page: page + 1,
-                limit: limit
+                limit: limit,
             };
         }
 
         if (startIndex > 0) {
             results.previous = {
                 page: page - 1,
-                limit: limit
+                limit: limit,
             };
         }
 
-        results.results = magazines.slice(startIndex, endIndex);
+        let filteredMagazines = magazines.filter(magazine => {
+            let _name = magazine.magazinename.trim().toLowerCase();
+            let _search = query.trim().toLowerCase();
+            return _name.indexOf(_search) > -1;
+        })
+
+        results.totalRecords = filteredMagazines.length;
+        results.results = filteredMagazines.slice(startIndex, endIndex);
 
         response.status(200).json(results);
     }

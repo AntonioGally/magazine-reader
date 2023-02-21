@@ -9,3 +9,17 @@ export type magazineType = {
     magazinesitemap: string;
     magazineindexof: string;
 }
+
+export type paginatedMagazine = {
+    next: {
+        page: number;
+        limit: number;
+    };
+    previous?: {
+        page: number;
+        limit: number;
+    };
+    pageCount: number;
+    totalRecords: number;
+    results: magazineType[];
+}
