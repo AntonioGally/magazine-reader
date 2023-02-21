@@ -8,9 +8,9 @@
 
 
 .loading-wrapper {
-    margin-top: 15px;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .loading-wrapper>span {

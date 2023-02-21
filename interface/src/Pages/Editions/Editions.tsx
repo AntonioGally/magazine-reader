@@ -139,7 +139,8 @@ const Editions: React.FC = () => {
                     showSizeChanger: true,
                     hideOnSinglePage: true,
                     total: data?.totalRecords,
-                    defaultPageSize: 20
+                    defaultPageSize: 20,
+                    showTotal: (total) => <span className={style["pagination-total"]}>{total}</span>
                 }}
                 loading={isLoading}
                 onChange={(pagination, filters, sorter, extra) => {

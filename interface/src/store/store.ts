@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux'
 import userReducer from "./user/user.reducer";
+import newEditionsReducer from "./newEditions/newEditions.reducer";
 
 const rootReducer = combineReducers({
-    user: userReducer
+    user: userReducer,
+    newEditions: newEditionsReducer
 })
 
 const store = configureStore({

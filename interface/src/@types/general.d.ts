@@ -1,5 +1,5 @@
 export interface promiseSuccess<T> {
-    data: T | any;
+    data: T;
 }
 
 export interface paginatedType<T> {
