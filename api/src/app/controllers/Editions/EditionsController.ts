@@ -61,6 +61,58 @@ class EditionsController {
         response.json(editions);
     }
 
+    async paginatedEditions(request: Request, response: Response) {
+        const userId = request.headers["x-userid"];
+        if (typeof userId !== "string") return response.status(400).json({ error: "user id needed" });
+
+        const editions = await new ListAllEditions(userId).start();
+        if (!editions) {
+            response.status(500).json({ error: "Error on listing edition process" })
+        }
+
+        const page = parseInt(request.query.page as string);
+        const limit = parseInt(request.query.limit as string);
+        const query = request.query.q as string || "";
+        const urlSort = request.query.urlSort as "ascend" | "descend" | undefined;
+
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+
+        const results = {} as any;
+        if (endIndex < editions.length) {
+            results.next = {
+                page: page + 1,
+                limit: limit,
+            };
+        }
+
+        if (startIndex > 0) {
+            results.previous = {
+                page: page - 1,
+                limit: limit,
+            };
+        }
+
+        let sortedEditions = editions.slice().sort((a, b) => {
+            let _a = Number(a.editionurl.split("/").at(-1));
+            let _b = Number(b.editionurl.split("/").at(-1));
+            if (urlSort === "ascend") {
+                return _a > _b ? -1 : 1;
+            } else if (urlSort === "descend") return _a < _b ? -1 : 1;
+            else return 0
+        });
+
+        let filteredEditions = sortedEditions.filter(item => Object.keys(item).some(
+            (keys) => {
+                return item[keys] != null && item[keys].toString().toLowerCase().includes(query.toLowerCase())
+            }
+        ));
+
+        results.totalRecords = filteredEditions.length;
+        results.results = filteredEditions.slice(startIndex, endIndex);
+        response.status(200).json(results);
+    }
+
     async deleteEdition(request: Request, response: Response) {
         const userId = request.headers["x-userid"];
         if (typeof userId !== "string") return response.status(400).json({ error: "user id needed" });

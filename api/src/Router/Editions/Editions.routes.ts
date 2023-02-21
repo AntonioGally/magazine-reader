@@ -11,5 +11,6 @@ export default class EditionsRouter {
         this.router.post('/editions', Auth.authenticateToken, EditionsController.store);
         this.router.get('/editions', Auth.authenticateToken, EditionsController.listEdition);
         this.router.get('/all-editions', Auth.authenticateToken, EditionsController.listAllEdition);
+        this.router.get('/all-editions/paginated', Auth.authenticateToken, EditionsController.paginatedEditions);
     }
 }

@@ -49,7 +49,7 @@ class MagazineController {
 
         const page = parseInt(request.query.page as string);
         const limit = parseInt(request.query.limit as string);
-        const query = request.query.q as string;
+        const query = request.query.q as string || "";
 
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
@@ -68,8 +68,14 @@ class MagazineController {
                 limit: limit,
             };
         }
+        
+        let sortedMagazines = magazines.slice().sort((a, b) => {
+            let _a = new Date(a.magazinecreateddate).getTime();
+            let _b = new Date(b.magazinecreateddate).getTime();
+            return _a > _b ? -1 : 1;
+        })
 
-        let filteredMagazines = magazines.filter(magazine => {
+        let filteredMagazines = sortedMagazines.filter(magazine => {
             let _name = magazine.magazinename.trim().toLowerCase();
             let _search = query.trim().toLowerCase();
             return _name.indexOf(_search) > -1;

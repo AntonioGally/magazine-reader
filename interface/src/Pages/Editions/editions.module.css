@@ -5,3 +5,14 @@
     display: flex;
     flex-direction: column;
 }
+
+.column-filter-input-area {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.column-filter-input-area>input {
+    width: 200px;
+    margin-bottom: 8px;
+}

@@ -11,7 +11,6 @@ export interface paginatedType<T> {
         page: number;
         limit: number;
     };
-    pageCount: number;
     totalRecords: number;
     results: T;
 }

@@ -100,17 +100,13 @@ const Table: React.FC<Props> = (props) => {
                     }}
                 />
             </div>
-            <ANTTable columns={editedColumns || props.columns} dataSource={filteredContent || props.paginatedData?.results} bordered
-                {...props.paginatedData && {
-                    pagination: {
-                        position: ["bottomRight"],
-                        showSizeChanger: true,
-                        hideOnSinglePage: true,
-                        total: props.paginatedData.pageCount
-                    }
+            <ANTTable columns={editedColumns || props.columns} dataSource={filteredContent || props.data} bordered
+                pagination={{
+                    position: ["bottomRight"],
+                    showSizeChanger: true,
+                    hideOnSinglePage: true,
                 }}
                 loading={props.loading}
-                onChange={(pagination, filters, sorter, extra) => { }}
                 size={"middle"} />
         </>
     )
