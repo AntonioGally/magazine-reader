@@ -5,6 +5,7 @@ import Label from "../../../../Components/Label/Label";
 import TextArea from "../../../../Components/TextArea/TextArea";
 //type
 import { magazineType } from "../../../../Pages/Magazines/magazines.types";
+import { getMagazineUpdatePeriods } from "../../../../scripts/utils";
 //Css
 import style from "./informations.module.css";
 
@@ -14,18 +15,6 @@ type Props = {
 }
 
 const Informations: React.FC<Props> = ({ magazineInfo, setPeriod }) => {
-
-    const getOptions = useMemo(() => {
-        return [
-            { label: "Diário", value: "daily" },
-            { label: "Semanal", value: "weekly" },
-            { label: "Mensal", value: "monthly" },
-            { label: "Bimensal", value: "bimontly" },
-            { label: "Trimestral", value: "quaterly" },
-            { label: "Semestral", value: "semesterly" },
-            { label: "Anualmente", value: "annually" },
-        ]
-    }, [])
 
     return (
         <div className={style["wrapper"]}>
@@ -54,7 +43,9 @@ const Informations: React.FC<Props> = ({ magazineInfo, setPeriod }) => {
                     </div>
                     <div>
                         <Label label={"Período de atualização:"} />
-                        <ComboBox onChange={(value) => setPeriod(value)} options={getOptions} defaultValue={magazineInfo.magazineupdateperiod} />
+                        <ComboBox onChange={(value) => setPeriod(value)} defaultValue={magazineInfo.magazineupdateperiod}
+                            options={getMagazineUpdatePeriods()}
+                        />
                     </div>
                 </div>
 

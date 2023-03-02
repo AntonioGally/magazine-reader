@@ -45,3 +45,15 @@ export function sliceIntoChunks(arr: any[], chunkSize: number) {
     }
     return res;
 }
+
+export function getMagazineUpdatePeriods() {
+    return [
+        { label: "Diário", value: "daily" },
+        { label: "Semanal", value: "weekly" },
+        { label: "Mensal", value: "monthly" },
+        { label: "Bimensal", value: "bimontly" },
+        { label: "Trimestral", value: "quaterly" },
+        { label: "Semestral", value: "semesterly" },
+        { label: "Anualmente", value: "annually" },
+    ]
+}

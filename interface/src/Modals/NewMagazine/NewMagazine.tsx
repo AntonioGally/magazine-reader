@@ -21,6 +21,7 @@ interface Props {
 }
 
 const NewMagazine: React.FC<Props> = ({ visible, closeModal }) => {
+    const [period, setPeriod] = useState("");
 
     const queryClient = useQueryClient()
     const newMagazine = useMutation({
@@ -61,7 +62,7 @@ const NewMagazine: React.FC<Props> = ({ visible, closeModal }) => {
             {
                 key: "0",
                 label: "Informações",
-                children: <Informations />
+                children: <Informations setPeriod={setPeriod} />
             },
             {
                 key: "1",
