@@ -93,8 +93,8 @@ const Table: React.FC<Props> = (props) => {
 
     return (
         <>
-            <div style={{ width: "30%", marginBottom: 15 }}>
-                <Input value={filterSearch} type="search"
+            <div style={{ width: "30%", marginBottom: 5 }}>
+                <Input value={filterSearch} type="search" prefix={<SearchOutlined />}
                     onChange={e => {
                         setFilterSearch(e.target.value);
                     }}

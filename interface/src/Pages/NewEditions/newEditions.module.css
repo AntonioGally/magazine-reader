@@ -6,6 +6,17 @@
     flex-direction: column;
 }
 
+.scan-area {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.scan-area>div {
+    width: 30%;
+    margin-right: 15px;
+}
 
 .loading-wrapper {
     display: flex;

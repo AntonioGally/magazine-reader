@@ -16,8 +16,6 @@ import { editionType } from "./editions.types";
 import { paginatedType } from "../../@types/general";
 import { ColumnsType } from "antd/lib/table";
 
-type editionTypeKeys = keyof editionType;
-
 const Editions: React.FC = () => {
 
     const [filterSearch, setFilterSearch] = useState("");
@@ -128,8 +126,8 @@ const Editions: React.FC = () => {
 
     return (
         <div className={style["wrapper"]}>
-            <div style={{ width: "30%", marginBottom: 15 }}>
-                <Input value={filterSearch} type="search"
+            <div style={{ width: "30%", marginBottom: 5 }}>
+                <Input value={filterSearch} type="search" prefix={<SearchOutlined />}
                     onChange={e => handleSearch(e.target.value)}
                 />
             </div>
@@ -137,9 +135,10 @@ const Editions: React.FC = () => {
                 pagination={{
                     position: ["bottomRight"],
                     showSizeChanger: true,
-                    hideOnSinglePage: true,
+                    // hideOnSinglePage: true,
                     total: data?.totalRecords,
-                    defaultPageSize: 20,
+                    defaultPageSize: 50,
+                    pageSizeOptions: [50, 100, 200, 300, 500],
                     showTotal: (total) => <span className={style["pagination-total"]}>{total}</span>
                 }}
                 scroll={{ y: 500 }}

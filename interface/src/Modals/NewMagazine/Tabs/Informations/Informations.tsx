@@ -35,7 +35,7 @@ const Informations: React.FC<Props> = ({ setPeriod }) => {
                     onChange={(e) => setImageUrl(e.target.value)}
                 />
             </div>
-            <div>
+            <div style={{ marginBottom: 10 }}>
                 <Label label={"URL:"} />
                 <Input placeholder="http://..." required name="magazineUrl" />
             </div>

@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import Loading from "../../Components/Loading/Loading";
 //Scripts
 import authHttp from "../../scripts/authHttp";
-import { getFormattedDate, sliceIntoChunks } from "../../scripts/utils";
+import { getFormattedDate, getMagazineUpdatePeriods, sliceIntoChunks } from "../../scripts/utils";
 //Css
 import style from "./newEditions.module.css";
 //Types
@@ -20,12 +20,15 @@ import { clearNewEditions, setNewEditions, setFailedMagazines, clearFailedMagazi
 import { RootState } from "../../store/store";
 import { promiseSuccess } from "../../@types/general";
 import { Button, Progress } from "antd";
+import ComboBox from "../../Components/ComboBox/ComboBox";
+import Label from "../../Components/Label/Label";
 
 const NewEditions: React.FC = () => {
     const { editionsArray, failedMagazines } = useSelector((state: RootState) => state.newEditions)
     const dispatch = useDispatch();
     const [loading, setLoading] = useState({ magazineName: [""], loading: false });
     const [magazinePercent, setMagazinePercent] = useState(0);
+    const [magazinePeriod, setMagazinePeriod] = useState("");
 
     const magazineQuery = useQuery<magazineType[]>("magazineList", {
         queryFn: () => authHttp.get("/magazines").then((res) => res.data)
@@ -50,7 +53,6 @@ const NewEditions: React.FC = () => {
         let requestChunk: magazineType[][] = sliceIntoChunks(magazines, 3);
         for (let chunkIdx = 0; chunkIdx < requestChunk.length; chunkIdx++) {
             let chunk = requestChunk[chunkIdx];
-            let currentMagazineId = "";
             setMagazinePercent(Math.floor(((chunkIdx + 1) * 100) / requestChunk.length));
 
             setLoading({ magazineName: chunk.map(c => c.magazinename), loading: true })
@@ -60,6 +62,17 @@ const NewEditions: React.FC = () => {
             } catch {
                 setLoading({ magazineName: [""], loading: false })
             }
+        }
+    }
+
+    function handleScan() {
+        dispatch(clearNewEditions());
+        dispatch(clearFailedMagazines());
+        if (magazinePeriod === "")
+            fetchEditions(magazineQuery.data as magazineType[]);
+        else {
+            let filteredMagazines = (magazineQuery.data as magazineType[]).filter((magazine) => magazine.magazineupdateperiod === magazinePeriod)
+            fetchEditions(filteredMagazines);
         }
     }
 
@@ -95,12 +108,12 @@ const NewEditions: React.FC = () => {
 
     return (
         <div className={style["wrapper"]}>
-            <div style={{ marginBottom: 20 }}>
-                <Button onClick={() => {
-                    dispatch(clearNewEditions())
-                    dispatch(clearFailedMagazines())
-                    fetchEditions(magazineQuery.data as magazineType[]);
-                }} type="primary">
+            <div className={style["scan-area"]}>
+                <div>
+                    <Label label={"Período de atualização:"} />
+                    <ComboBox options={getMagazineUpdatePeriods()} onChange={setMagazinePeriod} value={magazinePeriod} />
+                </div>
+                <Button onClick={handleScan} type="primary">
                     Escanear
                 </Button>
             </div>
