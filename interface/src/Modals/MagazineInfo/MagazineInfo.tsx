@@ -24,6 +24,7 @@ interface Props {
 }
 
 const MagazineInfo: React.FC<Props> = ({ visible, closeModal, magazineInfo }) => {
+    const [period, setPeriod] = useState("");
 
 
     const queryClient = useQueryClient()
@@ -56,7 +57,7 @@ const MagazineInfo: React.FC<Props> = ({ visible, closeModal, magazineInfo }) =>
             {
                 key: "0",
                 label: "Informações",
-                children: <Informations magazineInfo={magazineInfo} />
+                children: <Informations magazineInfo={magazineInfo} setPeriod={setPeriod} />
             },
             {
                 key: "1",
@@ -74,7 +75,7 @@ const MagazineInfo: React.FC<Props> = ({ visible, closeModal, magazineInfo }) =>
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         //@ts-ignore
-        const { title, description, magazineImage, magazineUrl, sitemap, indexof } = event.target;
+        const { title, description, magazineImage, magazineUrl, sitemap, indexof, } = event.target;
         const payload = ({
             name: title.value,
             description: description.value,
@@ -82,7 +83,8 @@ const MagazineInfo: React.FC<Props> = ({ visible, closeModal, magazineInfo }) =>
             url: magazineUrl.value,
             creationDate: generateDate(),
             siteMap: sitemap.value,
-            indexOf: indexof.value
+            indexOf: indexof.value,
+            updatePeriod: period
         } as unknown) as newMagazinePayload;
         const validation = new Validator(payload).start();
         if (validation.error) {

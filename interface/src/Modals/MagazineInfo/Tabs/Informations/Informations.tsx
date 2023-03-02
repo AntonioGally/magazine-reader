@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useMemo } from "react";
+import ComboBox from "../../../../Components/ComboBox/ComboBox";
 import Input from "../../../../Components/Input/Input";
 import Label from "../../../../Components/Label/Label";
 import TextArea from "../../../../Components/TextArea/TextArea";
@@ -8,10 +9,24 @@ import { magazineType } from "../../../../Pages/Magazines/magazines.types";
 import style from "./informations.module.css";
 
 type Props = {
-    magazineInfo: magazineType
+    magazineInfo: magazineType;
+    setPeriod: React.Dispatch<React.SetStateAction<string>>
 }
 
-const Informations: React.FC<Props> = ({ magazineInfo }) => {
+const Informations: React.FC<Props> = ({ magazineInfo, setPeriod }) => {
+
+    const getOptions = useMemo(() => {
+        return [
+            { label: "Diário", value: "daily" },
+            { label: "Semanal", value: "weekly" },
+            { label: "Mensal", value: "monthly" },
+            { label: "Bimensal", value: "bimontly" },
+            { label: "Trimestral", value: "quaterly" },
+            { label: "Semestral", value: "semesterly" },
+            { label: "Anualmente", value: "annually" },
+        ]
+    }, [])
+
     return (
         <div className={style["wrapper"]}>
             <div style={{ display: "flex" }}>
@@ -33,11 +48,16 @@ const Informations: React.FC<Props> = ({ magazineInfo }) => {
                         <Label label={"Imagem:"} />
                         <Input placeholder="http://..." required name="magazineImage" defaultValue={magazineInfo.magazineimage} />
                     </div>
-                    <div>
+                    <div style={{ marginBottom: 10 }}>
                         <Label label={"URL:"} />
                         <Input placeholder="http://..." required name="magazineUrl" defaultValue={magazineInfo.magazineurl} />
                     </div>
+                    <div>
+                        <Label label={"Período de atualização:"} />
+                        <ComboBox onChange={(value) => setPeriod(value)} options={getOptions} defaultValue={magazineInfo.magazineupdateperiod} />
+                    </div>
                 </div>
+
 
                 <div className={style["col"]}>
                     <div style={{ marginBottom: 10 }}>

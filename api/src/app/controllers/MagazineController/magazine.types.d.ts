@@ -7,5 +7,6 @@ export type storePayload = {
         creationDate: string;
         siteMap: string;
         indexOf: string;
+        updatePeriod: string;
     }
 }
