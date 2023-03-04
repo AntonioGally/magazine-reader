@@ -11,7 +11,7 @@ import style from "./informations.module.css";
 
 type Props = {
     magazineInfo: magazineType;
-    setPeriod: React.Dispatch<React.SetStateAction<string>>
+    setPeriod: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const Informations: React.FC<Props> = ({ magazineInfo, setPeriod }) => {

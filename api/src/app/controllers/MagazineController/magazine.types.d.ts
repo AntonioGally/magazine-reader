@@ -8,5 +8,6 @@ export type storePayload = {
         siteMap: string;
         indexOf: string;
         updatePeriod: string;
+        siteMapExists: boolean;
     }
 }

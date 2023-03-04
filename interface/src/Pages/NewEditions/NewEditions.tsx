@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import Loading from "../../Components/Loading/Loading";
 //Scripts
 import authHttp from "../../scripts/authHttp";
-import { getFormattedDate, getMagazineUpdatePeriods, sliceIntoChunks } from "../../scripts/utils";
+import { getFormattedDate, getMagazineUpdatePeriods, getPath, sliceIntoChunks } from "../../scripts/utils";
 //Css
 import style from "./newEditions.module.css";
 //Types
@@ -85,7 +85,12 @@ const NewEditions: React.FC = () => {
         {
             title: "Nova edição",
             dataIndex: "newEdition",
-            render: (text, record) => <a target={"_blank"} href={record.newEdition}>{text.split("/").at(-1)}</a>
+            render: (text, record) => <a target={"_blank"} href={record.newEdition}>{text.split("/").at(-1) || getPath(text)}</a>,
+            sorter: (a, b) => {
+                let _a = a.newEdition.toLowerCase().trim();
+                let _b = b.newEdition.toLowerCase().trim();
+                return _a.localeCompare(_b);
+            }
         },
     ];
 

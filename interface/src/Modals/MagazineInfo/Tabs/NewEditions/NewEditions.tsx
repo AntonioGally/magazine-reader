@@ -6,6 +6,7 @@ import Loading from "../../../../Components/Loading/Loading";
 import Table from "../../../../Components/Table/Table";
 import { magazineType } from "../../../../Pages/Magazines/magazines.types";
 import authHttp from "../../../../scripts/authHttp";
+import { getPath } from "../../../../scripts/utils";
 
 type Props = {
     magazineInfo: magazineType
@@ -25,11 +26,11 @@ const NewEditions: React.FC<Props> = ({ magazineInfo }) => {
         {
             title: "Url",
             dataIndex: "newEdition",
-            render: (text, record) => <a target={"_blank"} href={record.newEdition}>{text.split("/").at(-1)}</a>,
+            render: (text, record) => <a target={"_blank"} href={record.newEdition}>{text.split("/").at(-1) || getPath(text)}</a>,
             sorter: (a, b) => {
-                let _a = Number(a.newEdition.split("/").at(-1));
-                let _b = Number(b.newEdition.split("/").at(-1));
-                return _a - _b;
+                let _a = a.newEdition.toLowerCase().trim();
+                let _b = b.newEdition.toLowerCase().trim();
+                return _a.localeCompare(_b);
             }
         },
     ]

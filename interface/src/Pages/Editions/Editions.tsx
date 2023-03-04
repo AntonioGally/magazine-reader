@@ -6,7 +6,7 @@ import { Button, Space, Input } from "antd";
 import Table from "antd/lib/table";
 //Scripts
 import authHttp from "../../scripts/authHttp";
-import { getFormattedDate } from "../../scripts/utils";
+import { getFormattedDate, getPath } from "../../scripts/utils";
 //Assets
 import { SearchOutlined } from '@ant-design/icons';
 //Css
@@ -101,7 +101,7 @@ const Editions: React.FC = () => {
         {
             title: "Url",
             dataIndex: "editionurl",
-            render: (text, record) => <a target={"_blank"} href={record.editionurl}>{text.split("/").at(-1)}</a>,
+            render: (text, record) => <a target={"_blank"} href={record.editionurl}>{text.split("/").at(-1) || getPath(text)}</a>,
             sortDirections: ["ascend", "descend"],
             sorter: (a, b) => 0,
             ...getColumnFilterProps("editionurl"),

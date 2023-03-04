@@ -26,7 +26,6 @@ interface Props {
 const MagazineInfo: React.FC<Props> = ({ visible, closeModal, magazineInfo }) => {
     const [period, setPeriod] = useState("");
 
-
     const queryClient = useQueryClient()
     const editMagazine = useMutation({
         mutationFn: ({ payload, magazineId }: { payload: newMagazinePayload, magazineId: string }) => new EditFlow(payload, magazineId).start(),

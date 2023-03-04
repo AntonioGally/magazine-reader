@@ -13,7 +13,7 @@ class MagazineController {
     //Stores
     async storeMagazine(request: Request<any, any, storePayload>, response: Response) {
         if (!new StoreValidator(request.body).start()) {
-            return response.status(400).json({ error: "Verify the inputs sended" })
+            return response.status(400).json({ error: "Verify the inputs sent" })
         }
         const userId = request.headers["x-userid"];
         if (typeof userId !== "string") return response.status(400).json({ error: "user id needed" });

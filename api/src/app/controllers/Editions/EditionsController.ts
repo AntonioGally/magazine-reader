@@ -11,10 +11,6 @@ import SiteMapReader from "./Flows/Read/SiteMapReader";
 
 class EditionsController {
 
-    async readSiteMap(siteMap: string, _indexOf: string) {
-        return new SiteMapReader(siteMap, _indexOf).start();
-    }
-
     async store(request: Request<any, any, storeEditions>, response: Response) {
         const userId = request.headers["x-userid"];
         const { magazineId } = request.body
@@ -22,7 +18,7 @@ class EditionsController {
 
         const [magazineInfo] = await new GetMagazine(magazineId, userId).start();
         try {
-            const updatedLinks = await new SiteMapReader(magazineInfo.magazinesitemap, magazineInfo.magazineindexof).start();
+            const updatedLinks = await new SiteMapReader(magazineInfo).start();
             const createdLinks = [];
             for (let i = 0; i < updatedLinks.length; i++) {
                 let link = updatedLinks[i];
@@ -38,7 +34,7 @@ class EditionsController {
             }
             response.json(createdLinks);
         } catch (error) {
-            response.status(400).json({ magazineInfo, error })
+            response.status(500).json({ magazineInfo, error })
         }
     }
 
@@ -97,11 +93,11 @@ class EditionsController {
         }
 
         let sortedEditions = editions.slice().sort((a, b) => {
-            let _a = Number(a.editionurl.split("/").at(-1));
-            let _b = Number(b.editionurl.split("/").at(-1));
+            let _a = a.editionurl.toLowerCase().trim();
+            let _b = b.editionurl.toLowerCase().trim();
             if (urlSort === "ascend") {
-                return _a > _b ? -1 : 1;
-            } else if (urlSort === "descend") return _a < _b ? -1 : 1;
+                return _a.localeCompare(_b);
+            } else if (urlSort === "descend") return _b.localeCompare(_a);
             else return 0
         });
 

@@ -25,7 +25,7 @@ const Editions: React.FC<Props> = ({ magazineInfo }) => {
         {
             title: "Url",
             dataIndex: "editionurl",
-            render: (text, record) => <a target={"_blank"} href={record.editionurl}>{text.split("/").at(-1)}</a>
+            render: (text, record) => <a target={"_blank"} href={record.editionurl}>{text}</a>
         },
         {
             title: "Data de criação",

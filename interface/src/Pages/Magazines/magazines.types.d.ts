@@ -9,4 +9,5 @@ export type magazineType = {
     magazinesitemap: string;
     magazineindexof: string;
     magazineupdateperiod?: string;
+    magazinesitemapexists?: boolean;
 }

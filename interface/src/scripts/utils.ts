@@ -57,3 +57,10 @@ export function getMagazineUpdatePeriods() {
         { label: "Anualmente", value: "annually" },
     ]
 }
+
+//https://stackoverflow.com/a/30633703
+export function getPath(url: string, defaults: string = "unknown") {
+    var reUrlPath = /(?:\w+:)?\/\/[^\/]+([^?#]+)/;
+    var urlParts = url.match(reUrlPath) || [url, defaults];
+    return urlParts.pop();
+}
