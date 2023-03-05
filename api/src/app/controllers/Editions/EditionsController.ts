@@ -1,5 +1,6 @@
 //Types
 import { Request, Response } from "express";
+import { getFormattedDate } from "../../../scripts/util";
 import GetMagazine from "../MagazineController/flows/GetInfo/GetMagazine";
 import { storeEditions } from "./editions.types";
 import CreateEdition from "./Flows/Create/CreateEdition";
@@ -71,8 +72,10 @@ class EditionsController {
 
         const page = parseInt(request.query.page as string);
         const limit = parseInt(request.query.limit as string);
+        const urlSort = request.query.urlSort === "undefined" ? undefined : request.query.urlSort;
+        const creationDateSort = request.query.creationDateSort === "undefined" ? undefined : request.query.creationDateSort;
+        const creationDateFilter = request.query.creationDateFilter === "null" ? null : request.query.creationDateFilter;
         const query = request.query.q as string || "";
-        const urlSort = request.query.urlSort as "ascend" | "descend" | undefined;
 
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
@@ -92,23 +95,41 @@ class EditionsController {
             };
         }
 
+
         let sortedEditions = editions.slice().sort((a, b) => {
-            let _a = a.editionurl.toLowerCase().trim();
-            let _b = b.editionurl.toLowerCase().trim();
-            if (urlSort === "ascend") {
-                return _a.localeCompare(_b);
-            } else if (urlSort === "descend") return _b.localeCompare(_a);
-            else return 0
+            if (urlSort) {
+                let _a = a.editionurl.toLowerCase().trim();
+                let _b = b.editionurl.toLowerCase().trim();
+                if (urlSort === "ascend") {
+                    return _a.localeCompare(_b);
+                } else if (urlSort === "descend") return _b.localeCompare(_a);
+                else return 0
+            } else if (creationDateSort) {
+                let _a = new Date(a.editioncreateddate).getTime();
+                let _b = new Date(b.editioncreateddate).getTime();
+                if (creationDateSort === "ascend") {
+                    return _a - _b;
+                } else if (creationDateSort === "descend") return _b - _a;
+                else return 0
+            }
+            return 0;
         });
 
-        let filteredEditions = sortedEditions.filter(item => Object.keys(item).some(
+        let globalyFilteredEditions = sortedEditions.filter(item => Object.keys(item).some(
             (keys) => {
                 return item[keys] != null && item[keys].toString().toLowerCase().includes(query.toLowerCase())
             }
         ));
 
-        results.totalRecords = filteredEditions.length;
-        results.results = filteredEditions.slice(startIndex, endIndex);
+        if (creationDateFilter) {
+            globalyFilteredEditions = globalyFilteredEditions.filter(item => {
+                let formattedDate = getFormattedDate(item.editioncreateddate);
+                return formattedDate.dateString.trim().indexOf(creationDateFilter as string) > -1;
+            })
+        }
+
+        results.totalRecords = globalyFilteredEditions.length;
+        results.results = globalyFilteredEditions.slice(startIndex, endIndex);
         response.status(200).json(results);
     }
 
