@@ -19,6 +19,9 @@ CREATE TABLE IF NOT EXISTS magazines (
     magazineImage VARCHAR,
     magazineUrl VARCHAR NOT NULL,
     magazineCreatedDate TIMESTAMP NOT NULL,
+    -- period in days
+    magazineUpdatePeriod VARCHAR,
+    magazineSiteMapExists BOOLEAN,
     magazineCreatedBy UUID,
     FOREIGN KEY(magazineCreatedBy) REFERENCES users(userId),
     magazineSiteMap VARCHAR NOT NULL,
@@ -32,3 +35,6 @@ CREATE TABLE IF NOT EXISTS editions (
     editionMagazine UUID,
     FOREIGN KEY(editionMagazine) REFERENCES magazines(magazineId)
 );
+
+-- ALTER TABLE magazines ADD magazineUpdatePeriod VARCHAR;
+-- ALTER TABLE magazines ADD magazineSiteMapExists BOOLEAN;

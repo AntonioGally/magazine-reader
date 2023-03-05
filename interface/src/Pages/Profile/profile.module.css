@@ -1,0 +1,20 @@
+.wrapper {
+    padding: 28px;
+    max-height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.col {
+    width: 35%;
+}
+
+.col>div {
+    margin-bottom: 12px;
+}
+
+.col>div>label {
+    display: block;
+    margin-bottom: 4px;
+}

@@ -45,3 +45,22 @@ export function sliceIntoChunks(arr: any[], chunkSize: number) {
     }
     return res;
 }
+
+export function getMagazineUpdatePeriods() {
+    return [
+        { label: "Diário", value: "daily" },
+        { label: "Semanal", value: "weekly" },
+        { label: "Mensal", value: "monthly" },
+        { label: "Bimensal", value: "bimontly" },
+        { label: "Trimestral", value: "quaterly" },
+        { label: "Semestral", value: "semesterly" },
+        { label: "Anualmente", value: "annually" },
+    ]
+}
+
+//https://stackoverflow.com/a/30633703
+export function getPath(url: string, defaults: string = "unknown") {
+    var reUrlPath = /(?:\w+:)?\/\/[^\/]+([^?#]+)/;
+    var urlParts = url.match(reUrlPath) || [url, defaults];
+    return urlParts.pop();
+}

@@ -17,6 +17,7 @@ export default class QueryDispatcher {
             this.payload.url,
             this.payload.siteMap,
             this.payload.indexOf,
+            this.payload.updatePeriod,
             this.magazineId,
             this.userId
         ])

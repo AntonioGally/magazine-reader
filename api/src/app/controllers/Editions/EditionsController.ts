@@ -1,5 +1,6 @@
 //Types
 import { Request, Response } from "express";
+import { getFormattedDate } from "../../../scripts/util";
 import GetMagazine from "../MagazineController/flows/GetInfo/GetMagazine";
 import { storeEditions } from "./editions.types";
 import CreateEdition from "./Flows/Create/CreateEdition";
@@ -11,10 +12,6 @@ import SiteMapReader from "./Flows/Read/SiteMapReader";
 
 class EditionsController {
 
-    async readSiteMap(siteMap: string, _indexOf: string) {
-        return new SiteMapReader(siteMap, _indexOf).start();
-    }
-
     async store(request: Request<any, any, storeEditions>, response: Response) {
         const userId = request.headers["x-userid"];
         const { magazineId } = request.body
@@ -22,7 +19,7 @@ class EditionsController {
 
         const [magazineInfo] = await new GetMagazine(magazineId, userId).start();
         try {
-            const updatedLinks = await new SiteMapReader(magazineInfo.magazinesitemap, magazineInfo.magazineindexof).start();
+            const updatedLinks = await new SiteMapReader(magazineInfo).start();
             const createdLinks = [];
             for (let i = 0; i < updatedLinks.length; i++) {
                 let link = updatedLinks[i];
@@ -38,7 +35,7 @@ class EditionsController {
             }
             response.json(createdLinks);
         } catch (error) {
-            response.status(400).json({ magazineInfo, error })
+            response.status(500).json({ magazineInfo, error })
         }
     }
 
@@ -75,8 +72,10 @@ class EditionsController {
 
         const page = parseInt(request.query.page as string);
         const limit = parseInt(request.query.limit as string);
+        const urlSort = request.query.urlSort === "undefined" ? undefined : request.query.urlSort;
+        const creationDateSort = request.query.creationDateSort === "undefined" ? undefined : request.query.creationDateSort;
+        const creationDateFilter = request.query.creationDateFilter === "null" ? null : request.query.creationDateFilter;
         const query = request.query.q as string || "";
-        const urlSort = request.query.urlSort as "ascend" | "descend" | undefined;
 
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
@@ -96,23 +95,41 @@ class EditionsController {
             };
         }
 
+
         let sortedEditions = editions.slice().sort((a, b) => {
-            let _a = Number(a.editionurl.split("/").at(-1));
-            let _b = Number(b.editionurl.split("/").at(-1));
-            if (urlSort === "ascend") {
-                return _a > _b ? -1 : 1;
-            } else if (urlSort === "descend") return _a < _b ? -1 : 1;
-            else return 0
+            if (urlSort) {
+                let _a = a.editionurl.toLowerCase().trim();
+                let _b = b.editionurl.toLowerCase().trim();
+                if (urlSort === "ascend") {
+                    return _a.localeCompare(_b);
+                } else if (urlSort === "descend") return _b.localeCompare(_a);
+                else return 0
+            } else if (creationDateSort) {
+                let _a = new Date(a.editioncreateddate).getTime();
+                let _b = new Date(b.editioncreateddate).getTime();
+                if (creationDateSort === "ascend") {
+                    return _a - _b;
+                } else if (creationDateSort === "descend") return _b - _a;
+                else return 0
+            }
+            return 0;
         });
 
-        let filteredEditions = sortedEditions.filter(item => Object.keys(item).some(
+        let globalyFilteredEditions = sortedEditions.filter(item => Object.keys(item).some(
             (keys) => {
                 return item[keys] != null && item[keys].toString().toLowerCase().includes(query.toLowerCase())
             }
         ));
 
-        results.totalRecords = filteredEditions.length;
-        results.results = filteredEditions.slice(startIndex, endIndex);
+        if (creationDateFilter) {
+            globalyFilteredEditions = globalyFilteredEditions.filter(item => {
+                let formattedDate = getFormattedDate(item.editioncreateddate);
+                return formattedDate.dateString.trim().indexOf(creationDateFilter as string) > -1;
+            })
+        }
+
+        results.totalRecords = globalyFilteredEditions.length;
+        results.results = globalyFilteredEditions.slice(startIndex, endIndex);
         response.status(200).json(results);
     }
 

@@ -9,7 +9,7 @@ export default class QueryDispatcher {
     ) { }
 
     async execute() {
-        const { name, description, image, url, creationDate, siteMap, indexOf } = this.magazinePayload.information;
-        return query(this.query, [name, description, image, url, creationDate, this.userId, siteMap, indexOf]);
+        const { name, description, image, url, creationDate, siteMap, indexOf, updatePeriod, siteMapExists } = this.magazinePayload.information;
+        return query(this.query, [name, description, image, url, creationDate, updatePeriod, siteMapExists, this.userId, siteMap, indexOf]);
     }
 }

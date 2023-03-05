@@ -6,4 +6,6 @@ export type newMagazinePayload = {
     creationDate: string;
     siteMap: string;
     indexOf: string;
+    updatePeriod: string;
+    siteMapExists: boolean;
 }

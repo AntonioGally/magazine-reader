@@ -21,6 +21,8 @@ interface Props {
 }
 
 const NewMagazine: React.FC<Props> = ({ visible, closeModal }) => {
+    const [period, setPeriod] = useState("");
+    const [siteMapExists, setSiteMapExists] = useState(false);
 
     const queryClient = useQueryClient()
     const newMagazine = useMutation({
@@ -46,8 +48,11 @@ const NewMagazine: React.FC<Props> = ({ visible, closeModal }) => {
             url: magazineUrl.value,
             creationDate: generateDate(),
             siteMap: sitemap.value,
-            indexOf: _indexOf.value
+            indexOf: _indexOf.value,
+            updatePeriod: period,
+            siteMapExists
         } as unknown) as newMagazinePayload;
+
         const validation = new Validator(payload).start();
         if (validation.error) {
             return;
@@ -61,15 +66,15 @@ const NewMagazine: React.FC<Props> = ({ visible, closeModal }) => {
             {
                 key: "0",
                 label: "Informações",
-                children: <Informations />
+                children: <Informations setPeriod={setPeriod} />
             },
             {
                 key: "1",
                 label: "Seletores",
-                children: <Selectors />
+                children: <Selectors siteMapExists={siteMapExists} setSiteMapExists={setSiteMapExists} />
             }
         ]
-    }, []);
+    }, [siteMapExists]);
 
     return (
         <Modal open={visible} onCancel={closeModal} onOk={closeModal} maskClosable closable

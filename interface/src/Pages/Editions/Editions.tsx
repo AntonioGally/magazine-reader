@@ -6,7 +6,7 @@ import { Button, Space, Input } from "antd";
 import Table from "antd/lib/table";
 //Scripts
 import authHttp from "../../scripts/authHttp";
-import { getFormattedDate } from "../../scripts/utils";
+import { getFormattedDate, getPath } from "../../scripts/utils";
 //Assets
 import { SearchOutlined } from '@ant-design/icons';
 //Css
@@ -15,24 +15,27 @@ import style from "./editions.module.css";
 import { editionType } from "./editions.types";
 import { paginatedType } from "../../@types/general";
 import { ColumnsType } from "antd/lib/table";
-
-type editionTypeKeys = keyof editionType;
+import { FilterValue, SortOrder } from "antd/lib/table/interface";
 
 const Editions: React.FC = () => {
 
     const [filterSearch, setFilterSearch] = useState("");
     const [query, setQuery] = useState("");
     const [searchTimeout, setSearchTimeout] = useState<any>(null);
+
     const [tableParams, setTableParams] = useState({
         page: 1,
-        pageSize: 20,
-        urlSort: "ascend" || undefined
+        pageSize: 50,
+        urlSort: undefined as SortOrder | undefined,
+        creationDateSort: undefined as SortOrder | undefined,
+        creationDateFilter: null as boolean | React.Key | null
     })
 
     const columnSearchInput = useRef<any>(null);
 
-    const { isLoading, error, data } = useQuery<paginatedType<editionType[]>>(["editionList", tableParams.page, tableParams.pageSize, tableParams.urlSort, query], {
-        queryFn: () => authHttp.get(`/all-editions/paginated?page=${tableParams.page}&limit=${tableParams.pageSize}&urlSort=${tableParams.urlSort}&q=${query}`).then((res) => res.data)
+    const { isLoading, error, data } = useQuery<paginatedType<editionType[]>>(["editionList", tableParams.page, tableParams.pageSize, tableParams.urlSort, tableParams.creationDateSort, tableParams.creationDateFilter, query], {
+        queryFn: () => authHttp.get(`/all-editions/paginated?page=${tableParams.page}&limit=${tableParams.pageSize}&urlSort=${tableParams.urlSort}&creationDateSort=${tableParams.creationDateSort}&creationDateFilter=${tableParams.creationDateFilter}&q=${query}`)
+            .then((res) => res.data)
     });
 
 
@@ -49,11 +52,11 @@ const Editions: React.FC = () => {
             filterIcon: (filtered: boolean) => (
                 <SearchOutlined style={{ color: filtered ? '#1890ff' : "#8e8e8e" }} />
             ),
-            onFilter: (value: any, record: any) =>
-                record[dataIndex]
-                    ?.toString()
-                    .toLowerCase()
-                    .includes((value).toLowerCase()),
+            // onFilter: (value: any, record: any) =>
+            //     record[dataIndex]
+            //         ?.toString()
+            //         .toLowerCase()
+            //         .includes((value).toLowerCase()),
             onFilterDropdownVisibleChange: (visible: boolean) => {
                 if (visible) {
                     setTimeout(() => columnSearchInput.current?.select(), 100);
@@ -98,20 +101,19 @@ const Editions: React.FC = () => {
             title: "Revista",
             dataIndex: "magazinename",
             render: (text, record) => <a target={"_blank"} href={record.magazineurl}>{text}</a>,
-            ...getColumnFilterProps("magazinename"),
         },
         {
             title: "Url",
             dataIndex: "editionurl",
-            render: (text, record) => <a target={"_blank"} href={record.editionurl}>{text.split("/").at(-1)}</a>,
+            render: (text, record) => <a target={"_blank"} href={record.editionurl}>{text.split("/").at(-1) || getPath(text)}</a>,
             sortDirections: ["ascend", "descend"],
             sorter: (a, b) => 0,
-            ...getColumnFilterProps("editionurl"),
         },
         {
             title: "Data de criação",
             dataIndex: "editioncreateddate",
             render: (text, record) => <span>{getFormattedDate(record.editioncreateddate).dateString}</span>,
+            sorter: (a, b) => 0,
             ...getColumnFilterProps("editioncreateddate"),
         }
     ]
@@ -128,8 +130,8 @@ const Editions: React.FC = () => {
 
     return (
         <div className={style["wrapper"]}>
-            <div style={{ width: "30%", marginBottom: 15 }}>
-                <Input value={filterSearch} type="search"
+            <div style={{ width: "30%", marginBottom: 5 }}>
+                <Input value={filterSearch} type="search" prefix={<SearchOutlined />}
                     onChange={e => handleSearch(e.target.value)}
                 />
             </div>
@@ -137,9 +139,10 @@ const Editions: React.FC = () => {
                 pagination={{
                     position: ["bottomRight"],
                     showSizeChanger: true,
-                    hideOnSinglePage: true,
+                    // hideOnSinglePage: true,
                     total: data?.totalRecords,
-                    defaultPageSize: 20,
+                    defaultPageSize: 50,
+                    pageSizeOptions: [50, 100, 200, 300, 500],
                     showTotal: (total) => <span className={style["pagination-total"]}>{total}</span>
                 }}
                 scroll={{ y: 500 }}
@@ -149,7 +152,20 @@ const Editions: React.FC = () => {
                         setTableParams(prev => ({ ...prev, page: pagination.current || 1, pageSize: pagination.pageSize || 20 }))
                     }
                     if (sorter && !Array.isArray(sorter)) {
-                        setTableParams(prev => ({ ...prev, urlSort: sorter.order || "ascend" }))
+                        if (sorter.field === "editionurl") {
+                            setTableParams(prev => ({ ...prev, urlSort: sorter.order }))
+                        } else {
+                            setTableParams(prev => ({ ...prev, creationDateSort: sorter.order }))
+                        }
+                    }
+                    console.log(filters)
+                    if (Object.hasOwn(filters, "editioncreateddate")) {
+                        let _filter = filters.editioncreateddate ? filters.editioncreateddate[0] : null
+                        setTableParams(prev => ({ ...prev, creationDateFilter: _filter }))
+                    }
+                    if (filters.editioncreateddate) {
+                        let creationDateFilter = filters.editioncreateddate[0];
+                        setTableParams(prev => ({ ...prev, creationDateFilter }))
                     }
                 }}
                 size={"middle"} />
