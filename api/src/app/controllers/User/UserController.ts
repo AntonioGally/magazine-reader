@@ -19,13 +19,17 @@ class User {
     }
 
     async editUser(request: Request<any, any, editUserPayload>, response: Response) {
-        const userId = request.headers["x-userid"];
-        if (typeof userId !== "string") return response.status(400).json({ error: "user id needed" });
+        //TODO: if it's the same email, doesn't change it on DB
+        //TODO: you're not suppose to send the user password! 
 
-        const [editedUser] = await new EditUser(response, request.body, userId).start();
-        if (!editedUser) return response.status(500).json({ error: "Error on updating user" });
+
+        // const userId = request.headers["x-userid"];
+        // if (typeof userId !== "string") return response.status(400).json({ error: "user id needed" });
+
+        // const [editedUser] = await new EditUser(response, request.body, userId).start();
+        // if (!editedUser) return response.status(500).json({ error: "Error on updating user" });
         
-        return response.status(200).json(editedUser);
+        // return response.status(200).json(editedUser);
     }
 
 }
