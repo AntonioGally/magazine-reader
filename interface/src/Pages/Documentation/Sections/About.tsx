@@ -11,7 +11,7 @@ const About: React.FC = () => {
             </p>
             <p>
                 Foi desenvolvida por <a href="https://github.com/AntonioGally" target="_blank">Antônio Gally</a> e idealizada por {" "}
-                <a href="https://www.resenhacritica.com.br/sobre/" target="_blank">Itamar Freitas</a>
+                <a href="https://www.resenhacritica.com.br/sobre/" target="_blank">Itamar Freitas</a>.
             </p>
         </>
     )

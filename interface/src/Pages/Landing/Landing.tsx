@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import Button from "../../Components/Button/Button";
 import LoginModal from "../../Modals/Login/Login";
 import SignUpModal from "../../Modals/SignUp/SignUp";
+import Documentation from "../Documentation/Documentation";
 //Scripts
 import Login from "./Functions/Login/Login";
 
@@ -48,7 +49,9 @@ const Landing: React.FC = () => {
                         <Button label={"Entrar"} _type={"primary"} onClick={() => setLoginModal(true)} />
                     </div>
                 </div>
-                <div className={style["body"]}></div>
+                <div className={style["body"]}>
+                    <Documentation origin="landing"/>
+                </div>
             </div>
             {loginModal && (
                 <LoginModal visible={loginModal} closeModal={() => setLoginModal(false)} handleLogin={handleLogin} />
