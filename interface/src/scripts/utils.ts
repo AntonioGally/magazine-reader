@@ -12,7 +12,7 @@ export function getFormattedDate(_date: string) {
         day: "", month: "", year: "", hour: "", minutes: ""
     }
     //Day
-    var day = date.getDay();
+    var day = date.getDate();
     if (day < 10) finalDate.day = `0${day}`
     else finalDate.day = String(day);
     //Month
