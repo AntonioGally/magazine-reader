@@ -3,6 +3,7 @@ import { Divider } from "antd";
 import React from "react";
 //Css
 import style from "./documentation.module.css";
+import About from "./Sections/About";
 import Editions from "./Sections/Editions";
 //Sections
 import Magazine from "./Sections/Magazine";
@@ -12,7 +13,7 @@ const Documentation: React.FC = () => {
     return (
         <div className={style["wrapper"]}>
             <section id="about">
-        
+                <About />
             </section>
             <section id="magazine">
                 <Magazine />
