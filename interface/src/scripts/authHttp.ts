@@ -18,7 +18,7 @@ instance.interceptors.request.use(request => {
 instance.interceptors.response.use(response => {
     return response;
 }, function (error) {
-    if (error.response.data === "Forbidden") {
+    if (error.response.data === "Forbidden" || error.response.data === "Unauthorized") {
         localStorage.setItem("user_token", "");
         localStorage.setItem("user_id", "");
         window.location.href = window.location.origin;

@@ -44,9 +44,9 @@ const Profile: React.FC = () => {
                     <Input defaultValue={getFormattedDate(userRequest.data.usercreationdate).dateString} disabled />
                 </div>
             </div>
-            <Button _type="primary" style={{ width: "fit-content" }} disabled>
+            {/* <Button _type="primary" style={{ width: "fit-content" }} disabled>
                 Editar
-            </Button>
+            </Button> */}
         </div>
     )
 }

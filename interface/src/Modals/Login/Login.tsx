@@ -39,7 +39,7 @@ const Login: React.FC<Props> = ({ visible, closeModal, handleLogin }) => {
             <form className={style["wrapper"]} onSubmit={handleSubmit}>
                 <div>
                     <Label label={"Email:"} />
-                    <Input type={"email"} required placeholder="Ex.: antonio.gally@gmail.com" value={formData.email}
+                    <Input type={"email"} required placeholder="Ex.: admin@gmail.com" value={formData.email}
                         onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))} />
                 </div>
                 <div>
