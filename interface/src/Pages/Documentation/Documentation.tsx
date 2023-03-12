@@ -1,9 +1,11 @@
 //Libs
+import { Divider } from "antd";
 import React from "react";
 //Css
 import style from "./documentation.module.css";
 //Sections
 import Magazine from "./Sections/Magazine";
+import NewEditions from "./Sections/NewEditions";
 
 const Documentation: React.FC = () => {
     return (
@@ -11,8 +13,9 @@ const Documentation: React.FC = () => {
             <section id="magazine">
                 <Magazine />
             </section>
-            <section>
-                
+            <Divider />
+            <section id="new-editions">
+                <NewEditions />
             </section>
         </div>
     )

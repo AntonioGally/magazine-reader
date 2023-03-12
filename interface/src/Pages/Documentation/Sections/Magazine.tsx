@@ -65,10 +65,10 @@ const Magazine: React.FC = () => {
 
     const infoComponent = (
         <div style={{ display: "flex" }}>
-            <img src={magazineInfo} width={"50%"} />
+            <img src={magazineInfo} width={400} />
             <List
                 size="small"
-                style={{ width: "50%" }}
+                style={{ width: "100%" }}
                 bordered
                 dataSource={magazineInfoList}
                 renderItem={(item) => (
@@ -85,10 +85,10 @@ const Magazine: React.FC = () => {
 
     const selectorComponent = (
         <div style={{ display: "flex" }}>
-            <img src={magazineSelector} width={"50%"} />
+            <img src={magazineSelector} width={400} />
             <List
                 size="small"
-                style={{ width: "50%" }}
+                style={{ width: "100%" }}
                 bordered
                 dataSource={magazineSelectorInfo}
                 renderItem={(item) => (
@@ -119,7 +119,7 @@ const Magazine: React.FC = () => {
     }, [])
     return (
         <>
-            <h2>Cadastrando uma revista</h2>
+            <h1>Cadastrando uma nova revista</h1>
             <p>
                 Hoje o cadastro é totalmente feito pela interface. Irei demonstrar um passo a passo e depois
                 explicar de forma mais técnica como a plataforma consegue ler todas as edições.
