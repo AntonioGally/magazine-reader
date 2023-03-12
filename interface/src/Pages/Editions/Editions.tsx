@@ -158,7 +158,6 @@ const Editions: React.FC = () => {
                             setTableParams(prev => ({ ...prev, creationDateSort: sorter.order }))
                         }
                     }
-                    console.log(filters)
                     if (Object.hasOwn(filters, "editioncreateddate")) {
                         let _filter = filters.editioncreateddate ? filters.editioncreateddate[0] : null
                         setTableParams(prev => ({ ...prev, creationDateFilter: _filter }))

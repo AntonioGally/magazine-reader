@@ -44,7 +44,7 @@ const Landing: React.FC = () => {
             <div className={style["wrapper"]}>
                 <div className={style["header"]}>
                     <div>
-                        <Button label={"Criar conta"} _type={"secondary"} onClick={() => setSignUpModal(true)} />
+                        {/* <Button label={"Criar conta"} _type={"secondary"} onClick={() => setSignUpModal(true)} /> */}
                         <Button label={"Entrar"} _type={"primary"} onClick={() => setLoginModal(true)} />
                     </div>
                 </div>
